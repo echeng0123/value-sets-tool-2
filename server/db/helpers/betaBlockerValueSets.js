@@ -24,7 +24,7 @@ const getBetaBlockerValueSetsByValueSetId = async (value_set_id) => {
 		} = await client.query(`
         SELECT * FROM beta_blocker_value_sets
         WHERE value_set_id = ${value_set_id}`);
-		console.log("value_set_id in getBBVS by VS id", bbvs);
+		console.log("value sets in getBBVS by VS id", bbvs);
 		return bbvs;
 	} catch (error) {
 		throw error;
@@ -33,7 +33,7 @@ const getBetaBlockerValueSetsByValueSetId = async (value_set_id) => {
 
 const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
 	try {
-		console.log("enter BBVS by value set name", value_set_name);
+		console.log("enter BBVS by value set name: ", value_set_name);
 		const newInput = value_set_name.replaceAll("_", " ");
 		console.log("newInput is ", newInput, newInput.length, typeof newInput);
 		const {
@@ -42,15 +42,30 @@ const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
         SELECT * FROM beta_blocker_value_sets
         WHERE value_set_name = '${newInput}' 
         `);
-		console.log("value_set_name in getBBVS by VS name", bbvs);
+		console.log("value sets in getBBVS by VS name", bbvs);
 		return bbvs;
 	} catch (error) {
 		throw error;
 	}
 };
 
+const getBetaBlockerValueSetsByMedicationId = async (medication_id) => {
+	try {
+		console.log("enter BBVS by medication id: ", medication_id);
+		const {
+			rows: [bbvs],
+		} = await client.query(`
+        SELECT * FROM beta_blocker_value_sets
+        WHERE medications LIKE '%${medication_id}%'
+        `);
+		console.log("value sets in getBBVS by medication ID", bbvs);
+		return bbvs;
+	} catch (error) {}
+};
+
 module.exports = {
 	getAllBetaBlockerValueSets,
 	getBetaBlockerValueSetsByValueSetId,
 	getBetaBlockerValueSetsByValueSetName,
+	getBetaBlockerValueSetsByMedicationId,
 };

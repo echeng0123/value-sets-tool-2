@@ -7,6 +7,7 @@ const {
 	getAllBetaBlockerValueSets,
 	getBetaBlockerValueSetsByValueSetId,
 	getBetaBlockerValueSetsByValueSetName,
+	getBetaBlockerValueSetsByMedicationId,
 } = require("../db/helpers/betaBlockerValueSets");
 
 // GET - /api/beta_blocker_value_sets - get all on the "beta blocker value sets" table
@@ -37,14 +38,29 @@ router.get("/:value_set_id", async (req, res, next) => {
 	}
 });
 
-// GET - /api/beta_blocker_value_sets/:value_set_name - get BBVS by value set name
+// GET - /api/beta_blocker_value_sets/value_set_name/:value_set_name - get BBVS by value set name
 router.get("/value_set_name/:value_set_name", async (req, res, next) => {
 	try {
 		console.log(
-			"entering api/beta_blocker_value_sets/name/:value_set_name router"
+			"entering api/beta_blocker_value_sets/value_set_name/:value_set_name router"
 		);
 		const bbvsID = await getBetaBlockerValueSetsByValueSetName(
 			req.params.value_set_name
+		);
+		res.send(bbvsID);
+	} catch (error) {
+		next(error);
+	}
+});
+
+// GET - /api/beta_blocker_value_sets/medication_id/:medication_id - get BBVS by medication ID
+router.get("/medication_id/:medication_id", async (req, res, next) => {
+	try {
+		console.log(
+			"entering api/beta_blocker_value_sets/medication_id/:medication_id router"
+		);
+		const bbvsID = await getBetaBlockerValueSetsByMedicationId(
+			req.params.medication_id
 		);
 		res.send(bbvsID);
 	} catch (error) {
