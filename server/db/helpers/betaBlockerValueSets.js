@@ -31,11 +31,26 @@ const getBetaBlockerValueSetsByValueSetId = async (value_set_id) => {
 	}
 };
 
-// const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
-
-// }
+const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
+	try {
+		console.log("enter BBVS by value set name", value_set_name);
+		const newInput = value_set_name.replaceAll("_", " ");
+		console.log("newInput is ", newInput, newInput.length, typeof newInput);
+		const {
+			rows: [bbvs],
+		} = await client.query(`
+        SELECT * FROM beta_blocker_value_sets
+        WHERE value_set_name = '${newInput}' 
+        `);
+		console.log("value_set_name in getBBVS by VS name", bbvs);
+		return bbvs;
+	} catch (error) {
+		throw error;
+	}
+};
 
 module.exports = {
 	getAllBetaBlockerValueSets,
 	getBetaBlockerValueSetsByValueSetId,
+	getBetaBlockerValueSetsByValueSetName,
 };
