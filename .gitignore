@@ -1,0 +1,5 @@
+/resources
+server/node_modules
+client/node_modules
+server/secrets.js
+server/.env
