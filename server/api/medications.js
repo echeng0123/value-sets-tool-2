@@ -6,6 +6,7 @@ const router = express.Router();
 const {
 	getAllMedications,
 	getMedicationsByMedicationId,
+	getMedicationsBySimpleGenericName,
 } = require("../db/helpers/medications");
 
 // GET - /api/medications - get all on the "medications" table
@@ -34,6 +35,23 @@ router.get("/:medication_id", async (req, res, next) => {
 	}
 });
 
-// GET - /api/medications/medname/:medname - get medications by medname
+// GET - /api/medications/simple_generic_name/:simple_generic_name - get medications by simple_generic_name
+router.get(
+	"/simple_generic_name/:simple_generic_name",
+	async (req, res, next) => {
+		console.log("HELLO?");
+		try {
+			console.log(
+				"entering api/medications/simple_generic_name/:simple_generic_name router"
+			);
+			const medications = await getMedicationsBySimpleGenericName(
+				req.params.simple_generic_name
+			);
+			res.send(medications);
+		} catch (error) {
+			next(error);
+		}
+	}
+);
 
 module.exports = router;

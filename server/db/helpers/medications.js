@@ -24,7 +24,33 @@ const getMedicationsByMedicationId = async (medication_id) => {
 		} = await client.query(`
         SELECT * FROM medications
         WHERE medication_id = ${medication_id}`);
-		console.log("value sets in getMedications by VS id", medications);
+		console.log(
+			"value sets in getMedications by medication id",
+			medications
+		);
+		return medications;
+	} catch (error) {
+		throw error;
+	}
+};
+
+const getMedicationsBySimpleGenericName = async (simple_generic_name) => {
+	console.log("HERE I AM");
+	try {
+		console.log(
+			"enter medications by simple_generic_name: ",
+			simple_generic_name
+		);
+		const {
+			rows: [medications],
+		} = await client.query(`
+        SELECT * FROM medications
+        WHERE simple_generic_name LIKE '${simple_generic_name}%' 
+        `);
+		console.log(
+			"value sets in getMedications by SimpleGenericName",
+			medications
+		);
 		return medications;
 	} catch (error) {
 		throw error;
@@ -34,4 +60,5 @@ const getMedicationsByMedicationId = async (medication_id) => {
 module.exports = {
 	getAllMedications,
 	getMedicationsByMedicationId,
+	getMedicationsBySimpleGenericName,
 };
