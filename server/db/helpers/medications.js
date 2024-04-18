@@ -61,7 +61,7 @@ const getMedicationsByRoute = async (route) => {
 		console.log("enter medications by route: ", route);
 		const { rows } = await client.query(`
         SELECT * FROM medications
-        WHERE route = '${route}'
+        WHERE LOWER(route) LIKE '${route}%'
         `);
 		console.log("value sets in getMedications by route", rows);
 		return rows;
