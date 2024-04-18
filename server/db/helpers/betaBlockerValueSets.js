@@ -16,4 +16,26 @@ const getAllBetaBlockerValueSets = async () => {
 	}
 };
 
-module.exports = { getAllBetaBlockerValueSets };
+const getBetaBlockerValueSetsByValueSetId = async (value_set_id) => {
+	try {
+		console.log("enter BBVS by value set ID");
+		const {
+			rows: [bbvs],
+		} = await client.query(`
+        SELECT * FROM beta_blocker_value_sets
+        WHERE value_set_id = ${value_set_id}`);
+		console.log("value_set_id in getBBVS by VS id", bbvs);
+		return bbvs;
+	} catch (error) {
+		throw error;
+	}
+};
+
+// const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
+
+// }
+
+module.exports = {
+	getAllBetaBlockerValueSets,
+	getBetaBlockerValueSetsByValueSetId,
+};
