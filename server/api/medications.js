@@ -7,6 +7,7 @@ const {
 	getAllMedications,
 	getMedicationsByMedicationId,
 	getMedicationsBySimpleGenericName,
+	getMedicationsByRoute,
 } = require("../db/helpers/medications");
 
 // GET - /api/medications - get all on the "medications" table
@@ -53,5 +54,16 @@ router.get(
 		}
 	}
 );
+
+// GET - /api/medications/route/:route - get medications by route
+router.get("/route/:route", async (req, res, next) => {
+	try {
+		console.log("entering api/medications/route/:route router");
+		const medications = await getMedicationsByRoute(req.params.route);
+		res.send(medications);
+	} catch (error) {
+		next(error);
+	}
+});
 
 module.exports = router;

@@ -35,7 +35,6 @@ const getMedicationsByMedicationId = async (medication_id) => {
 };
 
 const getMedicationsBySimpleGenericName = async (simple_generic_name) => {
-	console.log("HERE I AM");
 	try {
 		console.log(
 			"enter medications by simple_generic_name: ",
@@ -57,8 +56,23 @@ const getMedicationsBySimpleGenericName = async (simple_generic_name) => {
 	}
 };
 
+const getMedicationsByRoute = async (route) => {
+	try {
+		console.log("enter medications by route: ", route);
+		const { rows } = await client.query(`
+        SELECT * FROM medications
+        WHERE route = '${route}'
+        `);
+		console.log("value sets in getMedications by route", rows);
+		return rows;
+	} catch (error) {
+		throw error;
+	}
+};
+
 module.exports = {
 	getAllMedications,
 	getMedicationsByMedicationId,
 	getMedicationsBySimpleGenericName,
+	getMedicationsByRoute,
 };

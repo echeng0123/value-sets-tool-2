@@ -52,15 +52,15 @@ const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
 const getBetaBlockerValueSetsByMedicationId = async (medication_id) => {
 	try {
 		console.log("enter BBVS by medication id: ", medication_id);
-		const {
-			rows: [bbvs],
-		} = await client.query(`
+		const { rows } = await client.query(`
         SELECT value_set_name FROM beta_blocker_value_sets
         WHERE medications LIKE '%${medication_id}%'
         `);
-		console.log("value sets in getBBVS by medication ID", bbvs);
-		return bbvs;
-	} catch (error) {}
+		console.log("value sets in getBBVS by medication ID", rows);
+		return rows;
+	} catch (error) {
+		throw error;
+	}
 };
 // HAVING CONTAINS(medications, '%${medication_id}%')
 // WHERE CONTAINS(medications, '%${medication_id}|%')
