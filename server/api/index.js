@@ -11,4 +11,7 @@ router.get("/health", (req, res, next) => {
 // ROUTER: /api/beta_blocker_value_sets
 router.use("/beta_blocker_value_sets", require("./betaBlockerValueSets"));
 
+// ROUTER: /api/medications
+router.use("/medications", require("./medications"));
+
 module.exports = router;
