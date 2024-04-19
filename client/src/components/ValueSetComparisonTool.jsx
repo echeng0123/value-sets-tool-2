@@ -76,7 +76,7 @@ export default function ValueSetComparisonTool() {
 				</form>
 			</div>
 			<div>
-				{searchInput.length > 0 && results && valueSets ? (
+				{searchInput.length > 0 && valueSets ? (
 					<div>
 						{valueSets.map((response) => {
 							return (
