@@ -38,15 +38,16 @@ const createTables = async () => {
             value_set_name TEXT,
             medications TEXT
         );
-        CREATE TABLE junction_value_sets (
-            juntion_value_set_id SERIAL PRIMARY KEY,
-            value_set_id BIGINT REFERENCES beta_blocker_value_sets(value_set_id),
-            medication_id BIGINT REFERENCES medications(medication_id)
-        )
+        
         `
 	);
 	console.log("Tables built");
 };
+// CREATE TABLE junction_value_sets (
+//     juntion_value_set_id SERIAL PRIMARY KEY,
+//     value_set_id BIGINT REFERENCES beta_blocker_value_sets(value_set_id),
+//     medication_id BIGINT REFERENCES medications(medication_id)
+// )
 
 // Call all functions and build database
 const rebuildDb = async () => {

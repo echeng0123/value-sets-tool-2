@@ -8,6 +8,7 @@ const {
 	getBetaBlockerValueSetsByValueSetId,
 	getBetaBlockerValueSetsByValueSetName,
 	getBetaBlockerValueSetsByMedicationId,
+	getBetaBlockerValueSetsBySimpleGenericName,
 } = require("../db/helpers/betaBlockerValueSets");
 
 // GET - /api/beta_blocker_value_sets - get all on the "beta blocker value sets" table
@@ -67,5 +68,23 @@ router.get("/medication_id/:medication_id", async (req, res, next) => {
 		next(error);
 	}
 });
+
+// GET - /api/beta_blocker_value_sets/simple_generic_name/:simple_generic_name - get BBVS by simple generic name
+router.get(
+	"/simple_generic_name/:simple_generic_name",
+	async (req, res, next) => {
+		try {
+			console.log(
+				"entering api/beta_blocker_value_sets/simple_generic_name/:simple_generic_name router"
+			);
+			const bbvsName = await getBetaBlockerValueSetsBySimpleGenericName(
+				req.params.simple_generic_name
+			);
+			res.send(bbvsName);
+		} catch (error) {
+			next(error);
+		}
+	}
+);
 
 module.exports = router;

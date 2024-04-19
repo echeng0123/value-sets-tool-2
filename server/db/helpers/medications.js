@@ -40,17 +40,12 @@ const getMedicationsBySimpleGenericName = async (simple_generic_name) => {
 			"enter medications by simple_generic_name: ",
 			simple_generic_name
 		);
-		const {
-			rows: [medications],
-		} = await client.query(`
+		const { rows } = await client.query(`
         SELECT * FROM medications
         WHERE simple_generic_name LIKE '${simple_generic_name}%' 
         `);
-		console.log(
-			"value sets in getMedications by SimpleGenericName",
-			medications
-		);
-		return medications;
+		console.log("value sets in getMedications by SimpleGenericName", rows);
+		return rows;
 	} catch (error) {
 		throw error;
 	}
