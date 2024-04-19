@@ -56,8 +56,9 @@ const getBetaBlockerValueSetsByMedicationId = async (medication_id) => {
         SELECT value_set_name FROM beta_blocker_value_sets
         WHERE medications LIKE '%${medication_id}%'
         `);
-		console.log("value sets in getBBVS by medication ID", rows);
-		return rows;
+		const cleanData = rows.map((row) => row.value_set_name);
+		console.log("value sets in getBBVS by medication ID", cleanData);
+		return cleanData;
 	} catch (error) {
 		throw error;
 	}

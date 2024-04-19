@@ -1,18 +1,31 @@
+/* eslint-disable react/jsx-key */
 import { useState, useEffect } from "react";
-import { fetchBetaBlockerValueSetsBySimpleGenericName } from "../../fetching/local";
+import {
+	fetchBetaBlockerValueSetsByMedicationId,
+	fetchBetaBlockerValueSetsBySimpleGenericName,
+} from "../../fetching/local";
+import ResultsContainer from "./ResultsContainer";
 
 export default function ValueSetComparisonTool() {
 	const [searchInput, setSearchInput] = useState("");
 	// const [actualInput, setActualInput] = useState("");
 	const [results, setResults] = useState([]);
 	const [valueSets, setValueSets] = useState([]);
+	// const [medicationValueSets, setMedicationValueSets] = useState([]);
+	// const [genericNameValueSets, setGenericNameValueSets] = useState([]);
+	// const [routeValueSets, setRouteValueSets] = useState([]);
+	const [currentButton, setCurrentButton] = useState("");
 
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-
+		let currentRadioValue = document.querySelector(
+			'input[name="radio"]:checked'
+		).value;
+		console.log("currentRadioValue: ", currentRadioValue);
 		if (searchInput) {
 			setResults(!results);
+			setCurrentButton(currentRadioValue);
 			// setActualInput(searchInput);
 			// console.log("album is", albumInput);
 		} else {
@@ -20,16 +33,36 @@ export default function ValueSetComparisonTool() {
 		}
 	};
 
+	// Getting value sets by medication ID
+	useEffect(() => {
+		async function getValueSetsByMedicationID() {
+			const response = await fetchBetaBlockerValueSetsByMedicationId(
+				searchInput
+			);
+			setValueSets(response);
+			// setMedicationValueSets(response);
+			console.log("response from FBBVSBMI: ", response);
+		}
+		if (currentButton === "medication") {
+			getValueSetsByMedicationID();
+		}
+	}, [searchInput, currentButton]);
+
+	// Getting value sets by simple generic name of medication
 	useEffect(() => {
 		async function getValueSetsBySimpleGenericName() {
 			const response = await fetchBetaBlockerValueSetsBySimpleGenericName(
 				searchInput
 			);
 			setValueSets(response);
+
+			// setGenericNameValueSets(response);
 			console.log("response from FBBVSBSGN: ", response);
 		}
-		getValueSetsBySimpleGenericName();
-	}, [searchInput]);
+		if (currentButton === "simple-generic-name") {
+			getValueSetsBySimpleGenericName();
+		}
+	}, [searchInput, currentButton]);
 
 	return (
 		<section>
@@ -44,7 +77,6 @@ export default function ValueSetComparisonTool() {
 						id="simple-generic-name"
 						name="radio"
 						value="simple-generic-name"
-						checked
 					/>
 					<label htmlFor="medication">Medication ID</label>
 					<input
@@ -52,19 +84,14 @@ export default function ValueSetComparisonTool() {
 						id="medication"
 						name="radio"
 						value="medication"
-						checked
 					/>
 					<label htmlFor="route">Route</label>
-					<input
-						type="radio"
-						id="route"
-						name="radio"
-						value="route"
-						checked
-					/>
+					<input type="radio" id="route" name="radio" value="route" />
 				</div>
 				<form onSubmit={handleSubmit}>
-					<label htmlFor="Search">Select field, then search</label>
+					<label htmlFor="Search">
+						Select field, then search by pressing enter
+					</label>
 					<br />
 					<input
 						id="search-form"
@@ -75,12 +102,27 @@ export default function ValueSetComparisonTool() {
 					/>
 				</form>
 			</div>
-			<div>
-				{searchInput.length > 0 && valueSets ? (
+			{currentButton && valueSets ? (
+				<ResultsContainer
+					currentButton={currentButton}
+					valueSets={valueSets}
+				/>
+			) : (
+				<></>
+			)}
+		</section>
+	);
+}
+
+{
+	/* <div id="medication-results-container">
+				{searchInput.length > 0 &&
+				currentButton === "medication" &&
+				medicationValueSets ? (
 					<div>
-						{valueSets.map((response) => {
+						{medicationValueSets.map((response) => {
 							return (
-								<div key={response.index}>
+								<div>
 									<h2>{response}</h2>
 								</div>
 							);
@@ -94,7 +136,5 @@ export default function ValueSetComparisonTool() {
 						</h3>
 					</>
 				)}
-			</div>
-		</section>
-	);
+			</div> */
 }
