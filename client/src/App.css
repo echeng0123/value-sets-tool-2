@@ -40,3 +40,19 @@
 .read-the-docs {
   color: #888;
 }
+
+/* CONTAINERS */
+
+
+
+/* COMPONENTS ---------------------- */
+.data-table{
+    border: 1px solid red;
+    place-content: center;
+    place-items: center;
+    max-width: 90dvw;
+}
+
+.table-row{
+    border: 1px solid pink;
+}

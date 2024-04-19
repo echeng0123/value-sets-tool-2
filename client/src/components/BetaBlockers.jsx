@@ -1,7 +1,14 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { fetchAllBetaBlockerValueSets } from "../../fetching/local";
-import ResultsContainer from "./ResultsContainer";
+import {
+	Table,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableBody,
+} from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function BetaBlockers() {
 	const [searchInput, setSearchInput] = useState("");
@@ -15,7 +22,7 @@ export default function BetaBlockers() {
 		let currentRadioValue = document.querySelector(
 			'input[name="radio"]:checked'
 		).value;
-		console.log("currentRadioValue: ", currentRadioValue);
+		// console.log("currentRadioValue: ", currentRadioValue);
 		if (searchInput) {
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
@@ -24,16 +31,41 @@ export default function BetaBlockers() {
 		}
 	};
 
+	// Get all data from the beta blocker value sets table
 	useEffect(() => {
 		async function getAllBetaBlockerValueSets() {
 			const response = await fetchAllBetaBlockerValueSets();
-			console.log("response from FABBVS", response);
+			// console.log("response from FABBVS", response);
 			setValueSets(response);
 		}
 		if (currentButton === "all") {
 			getAllBetaBlockerValueSets();
 		}
 	}, [currentButton]);
+
+	const headers = [
+		{
+			field: "value-set-id",
+			headerName: "Value Set Id",
+			width: 100,
+		},
+		{
+			field: "value-set-name",
+			headerName: "Value Set Name",
+			width: 100,
+		},
+		{
+			field: "corresponding-number",
+			headerName: "Total # Corresponding Medications",
+			type: "number",
+			width: 100,
+		},
+		{ field: "medications", headerName: "Medications", width: 400 },
+	];
+
+	const dataRows = valueSets.map((valueSet, index) => {
+		return { id: index, valueSet };
+	});
 
 	return (
 		<section>
@@ -84,10 +116,54 @@ export default function BetaBlockers() {
 					/>
 				</form>
 			</div>
-			{currentButton && valueSets ? (
+			<DataGrid
+				rows={dataRows}
+				columns={headers}
+				// initialState={{
+				// 	pagination: {
+				// 		paginationModel: { page: 0, pageSize: 5 },
+				// 	},
+				// }}
+				// pageSizeOptions={[5, 10]}
+				// checkboxSelection
+			/>
+			{/* <Fragment>
+				<DataGrid>
+					<TableHead>
+						<TableRow>
+						<TableCell>Value Set ID</TableCell>
+						<TableCell>Value Set Name</TableCell>
+						<TableCell>Total # Corresponding Medications</TableCell>
+						<TableCell>Medications</TableCell>
+						</TableRow>
+					</TableHead>
+					{valueSets.map((valueSet) => {
+						return (
+							<TableBody>
+								<TableCell>{valueSet.value_set_id}</TableCell>
+								<TableCell>{valueSet.value_set_name}</TableCell>
+								<TableCell>
+									{
+										valueSet.medications
+											.replaceAll("|", ",")
+											.split(",").length
+									}
+								</TableCell>
+								<TableCell>
+									{valueSet.medications.replaceAll(
+										"|",
+										" - "
+									)}
+								</TableCell>
+							</TableBody>
+						);
+					})}
+				</DataGrid>
+			</Fragment> */}
+
+			{/* {currentButton && valueSets ? (
 				<div>
-					<h3>hi</h3>
-					<table>
+					<table className="data-table">
 						<tr>
 							<th>Value Set ID</th>
 							<th>Value Set Name</th>
@@ -96,7 +172,7 @@ export default function BetaBlockers() {
 						</tr>
 						{valueSets.map((valueSet) => {
 							return (
-								<tr>
+								<tr className="table-row">
 									<th>{valueSet.value_set_id}</th>
 									<th>{valueSet.value_set_name}</th>
 									<th>
@@ -119,7 +195,7 @@ export default function BetaBlockers() {
 				</div>
 			) : (
 				<></>
-			)}
+			)} */}
 		</section>
 	);
 }
