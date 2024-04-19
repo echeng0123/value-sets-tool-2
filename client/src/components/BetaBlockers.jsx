@@ -45,17 +45,17 @@ export default function BetaBlockers() {
 
 	const headers = [
 		{
-			field: "value-set-id",
+			field: "value_set_id",
 			headerName: "Value Set Id",
 			width: 100,
 		},
 		{
-			field: "value-set-name",
+			field: "value_set_name",
 			headerName: "Value Set Name",
 			width: 100,
 		},
 		{
-			field: "corresponding-number",
+			field: "corresponding_number",
 			headerName: "Total # Corresponding Medications",
 			type: "number",
 			width: 100,
@@ -64,8 +64,17 @@ export default function BetaBlockers() {
 	];
 
 	const dataRows = valueSets.map((valueSet, index) => {
-		return { id: index, valueSet };
+		return {
+			id: index,
+			value_set_id: valueSet.value_set_id,
+			value_set_name: valueSet.value_set_name,
+			corresponding_number: valueSet.medications
+				.replaceAll("|", ",")
+				.split(",").length,
+			medications: valueSet.medications,
+		};
 	});
+	console.log("dataRows", dataRows);
 
 	return (
 		<section>
@@ -117,15 +126,16 @@ export default function BetaBlockers() {
 				</form>
 			</div>
 			<DataGrid
+				getRowId={(row) => row.id}
 				rows={dataRows}
 				columns={headers}
-				// initialState={{
-				// 	pagination: {
-				// 		paginationModel: { page: 0, pageSize: 5 },
-				// 	},
-				// }}
-				// pageSizeOptions={[5, 10]}
-				// checkboxSelection
+				initialState={{
+					pagination: {
+						paginationModel: { page: 0, pageSize: 5 },
+					},
+				}}
+				pageSizeOptions={[5, 10]}
+				checkboxSelection
 			/>
 			{/* <Fragment>
 				<DataGrid>
