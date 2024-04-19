@@ -3,17 +3,14 @@ import { useState, useEffect } from "react";
 import {
 	fetchBetaBlockerValueSetsByMedicationId,
 	fetchBetaBlockerValueSetsBySimpleGenericName,
+	fetchBetaBlockerValueSetsByRoute,
 } from "../../fetching/local";
 import ResultsContainer from "./ResultsContainer";
 
 export default function ValueSetComparisonTool() {
 	const [searchInput, setSearchInput] = useState("");
-	// const [actualInput, setActualInput] = useState("");
 	const [results, setResults] = useState([]);
 	const [valueSets, setValueSets] = useState([]);
-	// const [medicationValueSets, setMedicationValueSets] = useState([]);
-	// const [genericNameValueSets, setGenericNameValueSets] = useState([]);
-	// const [routeValueSets, setRouteValueSets] = useState([]);
 	const [currentButton, setCurrentButton] = useState("");
 
 	// sets state for results showing up when search is entered
@@ -26,8 +23,6 @@ export default function ValueSetComparisonTool() {
 		if (searchInput) {
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
-			// setActualInput(searchInput);
-			// console.log("album is", albumInput);
 		} else {
 			console.log("can't get results");
 		}
@@ -40,7 +35,6 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			// setMedicationValueSets(response);
 			console.log("response from FBBVSBMI: ", response);
 		}
 		if (currentButton === "medication") {
@@ -55,12 +49,24 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-
-			// setGenericNameValueSets(response);
 			console.log("response from FBBVSBSGN: ", response);
 		}
 		if (currentButton === "simple-generic-name") {
 			getValueSetsBySimpleGenericName();
+		}
+	}, [searchInput, currentButton]);
+
+	// Getting value sets by route
+	useEffect(() => {
+		async function getValueSetsByRoute() {
+			const response = await fetchBetaBlockerValueSetsByRoute(
+				searchInput
+			);
+			setValueSets(response);
+			console.log("response from FBBVSBR: ", response);
+		}
+		if (currentButton === "route") {
+			getValueSetsByRoute();
 		}
 	}, [searchInput, currentButton]);
 

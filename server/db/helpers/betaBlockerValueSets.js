@@ -115,7 +115,7 @@ const getBetaBlockerValueSetsByRoute = async (route) => {
 				`
                 SELECT value_set_name
                 FROM beta_blocker_value_sets
-                WHERE medications LIKE '${currentIdToSearch}%'
+                WHERE medications LIKE '%${currentIdToSearch}%'
                 `
 			);
 			rows.push(row);
