@@ -9,6 +9,7 @@ const {
 	getBetaBlockerValueSetsByValueSetName,
 	getBetaBlockerValueSetsByMedicationId,
 	getBetaBlockerValueSetsBySimpleGenericName,
+	getBetaBlockerValueSetsByRoute,
 } = require("../db/helpers/betaBlockerValueSets");
 
 // GET - /api/beta_blocker_value_sets - get all on the "beta blocker value sets" table
@@ -86,5 +87,18 @@ router.get(
 		}
 	}
 );
+
+// GET - /api/beta_blocker_value_sets/route/:route - get BBVS by route
+router.get("/route/:route", async (req, res, next) => {
+	try {
+		console.log("entering api/beta_blocker_value_sets/route/:route router");
+		const bbvsRoute = await getBetaBlockerValueSetsByRoute(
+			req.params.route
+		);
+		res.send(bbvsRoute);
+	} catch (error) {
+		next(error);
+	}
+});
 
 module.exports = router;

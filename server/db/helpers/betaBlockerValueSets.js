@@ -63,7 +63,7 @@ const getBetaBlockerValueSetsByMedicationId = async (medication_id) => {
 	}
 };
 
-// joining the two tables
+// joining the two tables to be able to search the beta blocker value sets by an inputted simple generic name
 const getBetaBlockerValueSetsBySimpleGenericName = async (
 	simple_generic_name
 ) => {
@@ -75,7 +75,6 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 		const possibleIdsMap = possibleIdsClean.map((a) => a.medication_id);
 		const possibleIds = "'" + possibleIdsMap.join("','") + "'";
 		const maxLength = possibleIds.length;
-		// console.log("possibleIDs + length:", possibleIds, maxLength);
 		let rows = [];
 		for (let i = 0; i <= maxLength; i++) {
 			let currentIdToSearch = possibleIdsMap[i];
@@ -97,35 +96,36 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 	}
 };
 
-// SELECT value_set_name
-//         	FROM beta_blocker_value_sets
-//         	WHERE medications LIKE '___%'
-
-// AND medications IN (${possibleIds})
-
-// SELECT value_set_name FROM beta_blocker_value_sets
-//             INNER JOIN medications ON
-//             medications.medication_id LIKE '${possibleIds}'
-
-// SELECT value_set_name
-// 		    FROM beta_blocker_value_sets
-// 		    WHERE medications  (${possibleIds}')
-
-// SELECT value_set_name
-//             FROM beta_blocker_value_sets
-//             WHERE medications LIKE '%(
-//                 SELECT medication_id
-//                 FROM medications
-//                 WHERE simple_generic_name LIKE '${simple_generic_name}%'
-//             )%'
-
-// WHERE medications LIKE '%716%'
-
-// SELECT value_set_name
-//             FROM beta_blocker_value_sets
-//             WHERE medications LIKE '%(SELECT medication_id
-//             FROM medications
-//             WHERE simple_generic_name LIKE '${simple_generic_name}%')%'
+// joining the two tables to be able to search the beta blocker value sets by route
+const getBetaBlockerValueSetsByRoute = async (route) => {
+	try {
+		console.log("enter BBVS by route: ", route);
+		const possibleIdsRaw = await client.query(`
+        SELECT medication_id FROM medications WHERE LOWER(route) LIKE '${route}%'`);
+		const possibleIdsClean = possibleIdsRaw.rows;
+		const possibleIdsMap = possibleIdsClean.map((a) => a.medication_id);
+		const possibleIds = "'" + possibleIdsMap.join("','") + "'";
+		const maxLength = possibleIds.length;
+		let rows = [];
+		for (let i = 0; i <= maxLength; i++) {
+			let currentIdToSearch = possibleIdsMap[i];
+			console.log("currentIdToSearch", currentIdToSearch);
+			const row = await client.query(
+				`
+                SELECT value_set_name
+                FROM beta_blocker_value_sets
+                WHERE medications LIKE '${currentIdToSearch}%'
+                `
+			);
+			rows.push(row);
+		}
+		const cleanData = rows[0].rows.map((row) => row.value_set_name);
+		console.log("value sets in getBBVS by simple generic name", cleanData);
+		return cleanData;
+	} catch (error) {
+		throw error;
+	}
+};
 
 module.exports = {
 	getAllBetaBlockerValueSets,
@@ -133,4 +133,5 @@ module.exports = {
 	getBetaBlockerValueSetsByValueSetName,
 	getBetaBlockerValueSetsByMedicationId,
 	getBetaBlockerValueSetsBySimpleGenericName,
+	getBetaBlockerValueSetsByRoute,
 };
