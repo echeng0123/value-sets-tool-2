@@ -78,7 +78,7 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 		const { rows } = await client.query(`
             SELECT value_set_name
         	FROM beta_blocker_value_sets
-        	WHERE medications IN (${possibleIds})
+        	WHERE medications LIKE '___%' 
 		`);
 		console.log("value sets in getBBVS by simple generic name", rows);
 		return rows;
@@ -86,6 +86,8 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 		throw error;
 	}
 };
+
+// AND medications IN (${possibleIds})
 
 // SELECT value_set_name FROM beta_blocker_value_sets
 //             INNER JOIN medications ON
