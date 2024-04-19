@@ -3,6 +3,7 @@ import { fetchBetaBlockerValueSetsBySimpleGenericName } from "../../fetching/loc
 
 export default function ValueSetComparisonTool() {
 	const [searchInput, setSearchInput] = useState("");
+	// const [actualInput, setActualInput] = useState("");
 	const [results, setResults] = useState([]);
 	const [valueSets, setValueSets] = useState([]);
 
@@ -12,6 +13,7 @@ export default function ValueSetComparisonTool() {
 
 		if (searchInput) {
 			setResults(!results);
+			// setActualInput(searchInput);
 			// console.log("album is", albumInput);
 		} else {
 			console.log("can't get results");

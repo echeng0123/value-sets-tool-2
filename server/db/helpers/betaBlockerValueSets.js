@@ -70,11 +70,12 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 	try {
 		console.log("enter BBVS by simple generic name: ", simple_generic_name);
 		const possibleIdsRaw = await client.query(`
-        SELECT medication_id FROM medications WHERE simple_generic_name LIKE '${simple_generic_name}%'`);
+        SELECT medication_id FROM medications WHERE simple_generic_name LIKE '%${simple_generic_name}%'`);
 		const possibleIdsClean = possibleIdsRaw.rows;
 		const possibleIdsMap = possibleIdsClean.map((a) => a.medication_id);
 		const possibleIds = "'" + possibleIdsMap.join("','") + "'";
 		const maxLength = possibleIds.length;
+		console.log("possibleIDs", possibleIds);
 		let rows = [];
 		for (let i = 0; i <= maxLength; i++) {
 			let currentIdToSearch = possibleIdsMap[i];
@@ -83,7 +84,7 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 				`
                 SELECT value_set_name
                 FROM beta_blocker_value_sets
-                WHERE medications LIKE '${currentIdToSearch}%'
+                WHERE medications LIKE '%${currentIdToSearch}%'
                 `
 			);
 			rows.push(row);
