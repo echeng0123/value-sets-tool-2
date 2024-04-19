@@ -75,10 +75,9 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
 		const possibleIdsMap = possibleIdsClean.map((a) => a.medication_id);
 		const possibleIds = "'" + possibleIdsMap.join("','") + "'";
 		const maxLength = possibleIds.length;
-		console.log("possibleIDs + length:", possibleIds, maxLength);
+		// console.log("possibleIDs + length:", possibleIds, maxLength);
 		let rows = [];
-		let i = 0;
-		while (i <= maxLength) {
+		for (let i = 0; i <= maxLength; i++) {
 			let currentIdToSearch = possibleIdsMap[i];
 			console.log("currentIdToSearch", currentIdToSearch);
 			const row = await client.query(
@@ -88,12 +87,11 @@ const getBetaBlockerValueSetsBySimpleGenericName = async (
                 WHERE medications LIKE '${currentIdToSearch}%'
                 `
 			);
-			i += 1;
 			rows.push(row);
-			return rows;
 		}
-		console.log("value sets in getBBVS by simple generic name", rows);
-		return rows;
+		const cleanData = rows[0].rows.map((row) => row.value_set_name);
+		console.log("value sets in getBBVS by simple generic name", cleanData);
+		return cleanData;
 	} catch (error) {
 		throw error;
 	}
