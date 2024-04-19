@@ -72,7 +72,7 @@ export default function ValueSetComparisonTool() {
 
 	return (
 		<section>
-			<h1>VALUE SET COMPARISON TOOL</h1>
+			<h1>Value Set Comparison Tool</h1>
 			<div>
 				<div>
 					<label htmlFor="simple-generic-name">
@@ -118,29 +118,4 @@ export default function ValueSetComparisonTool() {
 			)}
 		</section>
 	);
-}
-
-{
-	/* <div id="medication-results-container">
-				{searchInput.length > 0 &&
-				currentButton === "medication" &&
-				medicationValueSets ? (
-					<div>
-						{medicationValueSets.map((response) => {
-							return (
-								<div>
-									<h2>{response}</h2>
-								</div>
-							);
-						})}
-					</div>
-				) : (
-					<>
-						<h3>
-							Corresponding value sets will appear here once the
-							search term is entered.
-						</h3>
-					</>
-				)}
-			</div> */
 }
