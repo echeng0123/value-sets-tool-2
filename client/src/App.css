@@ -56,3 +56,20 @@
 .table-row{
     border: 1px solid pink;
 }
+
+.MuiDataGrid-root {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    overflow-x: 'scroll';
+
+}
+
+/*
+.Mui-checked{
+    background-color: rgba(255,255,255,1)
+}
+
+.MuiCheckbox-root.Mui-checked:not(.MuiCheckbox-indeterminate) {
+    background-color: '#1890ff';
+    border-color: '#1890ff';
+  } */

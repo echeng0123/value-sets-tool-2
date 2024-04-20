@@ -15,6 +15,9 @@ export default function BetaBlockers() {
 	const [valueSets, setValueSets] = useState([]);
 	const [results, setResults] = useState([]);
 	const [currentButton, setCurrentButton] = useState("all");
+	const [selectedRowDataToDisplay, setSelectedRowDataToDisplay] = useState(
+		[]
+	);
 
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
@@ -47,20 +50,24 @@ export default function BetaBlockers() {
 		{
 			field: "value_set_id",
 			headerName: "Value Set Id",
-			width: 100,
+			minWidth: 100,
 		},
 		{
 			field: "value_set_name",
 			headerName: "Value Set Name",
-			width: 100,
+			minWidth: 100,
 		},
 		{
 			field: "corresponding_number",
 			headerName: "Total # Corresponding Medications",
 			type: "number",
-			width: 100,
+			minWidth: 100,
 		},
-		{ field: "medications", headerName: "Medications", width: 400 },
+		{
+			field: "medications",
+			headerName: "Medications",
+			minWidth: 400,
+		},
 	];
 
 	const dataRows = valueSets.map((valueSet, index) => {
@@ -74,7 +81,19 @@ export default function BetaBlockers() {
 			medications: valueSet.medications,
 		};
 	});
-	console.log("dataRows", dataRows);
+	// console.log("dataRows", dataRows);
+
+	const selectedRowData = [];
+	function selectionModelChange(ids) {
+		console.log("ids in selection model change", ids);
+		for (let i = 0; i < ids.length; i++) {
+			console.log("hey");
+			selectedRowData.push(dataRows[ids[i]]);
+		}
+		console.log("selected rows data", selectedRowData);
+		setSelectedRowDataToDisplay(selectedRowData);
+		return selectedRowData;
+	}
 
 	return (
 		<section>
@@ -125,53 +144,74 @@ export default function BetaBlockers() {
 					/>
 				</form>
 			</div>
-			<DataGrid
-				getRowId={(row) => row.id}
-				rows={dataRows}
-				columns={headers}
-				initialState={{
-					pagination: {
-						paginationModel: { page: 0, pageSize: 5 },
-					},
-				}}
-				pageSizeOptions={[5, 10]}
-				checkboxSelection
-			/>
-			{/* <Fragment>
-				<DataGrid>
-					<TableHead>
-						<TableRow>
-						<TableCell>Value Set ID</TableCell>
-						<TableCell>Value Set Name</TableCell>
-						<TableCell>Total # Corresponding Medications</TableCell>
-						<TableCell>Medications</TableCell>
-						</TableRow>
-					</TableHead>
-					{valueSets.map((valueSet) => {
-						return (
-							<TableBody>
-								<TableCell>{valueSet.value_set_id}</TableCell>
-								<TableCell>{valueSet.value_set_name}</TableCell>
-								<TableCell>
-									{
-										valueSet.medications
-											.replaceAll("|", ",")
-											.split(",").length
-									}
-								</TableCell>
-								<TableCell>
-									{valueSet.medications.replaceAll(
-										"|",
-										" - "
-									)}
-								</TableCell>
-							</TableBody>
-						);
-					})}
-				</DataGrid>
-			</Fragment> */}
+			<div style={{ height: "100%", width: "100%" }}>
+				<DataGrid
+					getRowId={(row) => row.id}
+					rows={dataRows}
+					columns={headers}
+					initialState={{
+						pagination: {
+							paginationModel: { page: 0, pageSize: 5 },
+						},
+					}}
+					pageSizeOptions={[5, 10]}
+					checkboxSelection
+					onRowSelectionModelChange={(ids) => {
+						selectionModelChange(ids);
+					}}
+					autoHeight={"true"}
+					sx={{
+						boxShadow: 2,
+						border: 2,
+						backgroundColor: "rgba(255, 255, 255, 0.8)",
+						color: "black",
+						borderColor: "primary.light",
+						"& .MuiDataGrid-cell:hover": {
+							color: "primary.main",
+						},
+						width: "100%",
+						// fontFamily: "Karla",
+					}}
+				/>
+				<h3>Selected data appears below</h3>
+				{selectedRowDataToDisplay != [] &&
+				selectedRowDataToDisplay.length > 0 ? (
+					<DataGrid
+						getRowId={(row) => row.id}
+						rows={selectedRowDataToDisplay}
+						columns={headers}
+						initialState={{
+							pagination: {
+								paginationModel: { page: 0, pageSize: 5 },
+							},
+						}}
+						pageSizeOptions={[5, 10]}
+						checkboxSelection
+						sx={{
+							boxShadow: 2,
+							border: 2,
+							backgroundColor: "rgba(255, 255, 255, 0.8)",
+							color: "black",
+							borderColor: "primary.light",
+							"& .MuiDataGrid-cell:hover": {
+								color: "primary.main",
+							},
+							// fontFamily: "Karla",
+						}}
+					/>
+				) : (
+					<></>
+				)}
+			</div>
+			<div>
+				<h1></h1>
+			</div>
+		</section>
+	);
+}
 
-			{/* {currentButton && valueSets ? (
+{
+	/* {currentButton && valueSets ? (
 				<div>
 					<table className="data-table">
 						<tr>
@@ -205,7 +245,5 @@ export default function BetaBlockers() {
 				</div>
 			) : (
 				<></>
-			)} */}
-		</section>
-	);
+			)} */
 }
