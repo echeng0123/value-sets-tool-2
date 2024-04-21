@@ -4,6 +4,7 @@ import {
 	fetchAllBetaBlockerValueSets,
 	fetchBetaBlockerValueSetsByValueSetId,
 	fetchBetaBlockerValueSetsByValueSetName,
+	fetchBetaBlockerValueSetsByMedicationId,
 } from "../../fetching/local";
 import {
 	Table,
@@ -26,6 +27,8 @@ export default function BetaBlockers() {
 	const [dataRows, setDataRows] = useState([]);
 	const [dataRowsById, setDataRowsById] = useState([]);
 	const [dataRowsByName, setDataRowsByName] = useState([]);
+	const [dataRowsByMedication, setDataRowsByMedication] = useState([]);
+
 	const [tab, setTab] = useState(1);
 
 	function tab1behavior() {
@@ -41,6 +44,8 @@ export default function BetaBlockers() {
 			'input[name="radio"]:checked'
 		).value;
 		if (searchInput) {
+			console.log("currentRadioValue in handlesubmit", currentRadioValue);
+			console.log("searchInput in handleSubmit", searchInput);
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
 		} else {
@@ -96,11 +101,24 @@ export default function BetaBlockers() {
 			const response = await fetchBetaBlockerValueSetsByValueSetName(
 				searchInput
 			);
-			// console.log("response from FETCH", response);
 			setValueSetsQuery(response);
 		}
 		if (currentButton === "value-set-name") {
 			getBetaBlockerValueSetsByValueSetName();
+		}
+	}, [currentButton, searchInput]);
+
+	// Get value sets by medication ID
+	useEffect(() => {
+		async function getBetaBlockerValueSetsByMedicationId() {
+			const response = await fetchBetaBlockerValueSetsByMedicationId(
+				searchInput
+			);
+			console.log("response from FETCH", response);
+			setValueSetsQuery(response);
+		}
+		if (currentButton === "medication") {
+			getBetaBlockerValueSetsByMedicationId();
 		}
 	}, [currentButton, searchInput]);
 
@@ -149,6 +167,14 @@ export default function BetaBlockers() {
 			searchInput != 0
 		) {
 			setDataRowsByName(valueSetsQuery);
+		} else if (
+			valueSetsQuery &&
+			Object.keys(valueSetsQuery).length > 0 &&
+			Object.keys(valueSetsQuery).length < 12 &&
+			currentButton === "medication" &&
+			searchInput != 0
+		) {
+			setDataRowsByMedication(valueSetsQuery);
 		}
 
 		function defineDataArrayId(valueSetsQuery) {
@@ -162,7 +188,7 @@ export default function BetaBlockers() {
 					.split(",").length,
 				medications: valueSetsQuery.medications,
 			};
-			console.log("dataRowsArray", dataRowsArray);
+			// console.log("dataRowsArray", dataRowsArray);
 			return dataRowsArray;
 		}
 	}, [valueSetsQuery, currentButton, searchInput]);
@@ -309,8 +335,8 @@ export default function BetaBlockers() {
 							}
 						/>
 					</form>
+					{/* show value sets by queried value set id */}
 					<div>
-						{/* show value sets by queried value set id */}
 						{currentButton === "value-set-id" &&
 						Object.keys(dataRowsById).length > 0 &&
 						searchInput.length != 0 ? (
@@ -332,10 +358,12 @@ export default function BetaBlockers() {
 						) : (
 							<></>
 						)}
+					</div>
+					{/* show value sets by queried value set name */}
+					<div>
 						{currentButton === "value-set-name" &&
 						searchInput.length != 0 ? (
 							<div>
-								<p>hi</p>
 								{dataRowsByName.map((dataRowByName) => {
 									return (
 										<div>
@@ -363,6 +391,25 @@ export default function BetaBlockers() {
 										</div>
 									);
 								})}
+							</div>
+						) : (
+							<></>
+						)}
+					</div>
+					{/* show value sets by queried medication ID */}
+					<div>
+						{currentButton === "medication" &&
+						searchInput.length != 0 ? (
+							<div>
+								{dataRowsByMedication.map(
+									(dataRowByMedication) => {
+										return (
+											<div>
+												<h3>{dataRowByMedication}</h3>
+											</div>
+										);
+									}
+								)}
 							</div>
 						) : (
 							<></>
