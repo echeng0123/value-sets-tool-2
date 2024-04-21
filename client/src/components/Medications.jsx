@@ -20,11 +20,12 @@ export default function Medications() {
 	const [searchInput, setSearchInput] = useState("");
 	const [currentButton, setCurrentButton] = useState("all");
 	const [results, setResults] = useState([]);
-	const [medicationData, setMedicationData] = useState([]);
 	const [dataRows, setDataRows] = useState([]);
 	const [selectedRowDataToDisplay, setSelectedRowDataToDisplay] = useState(
 		[]
 	);
+	const [medicationData, setMedicationData] = useState([]);
+	const [medicationDataById, setMedicationDataById] = useState([]);
 
 	function tab1behavior() {
 		setTab(1);
@@ -48,7 +49,7 @@ export default function Medications() {
 		}
 	};
 
-	// Get all data from the beta blocker value sets table
+	// Get all data from the medications table
 	useEffect(() => {
 		async function getAllMedications() {
 			const response = await fetchAllMedications();
@@ -78,6 +79,19 @@ export default function Medications() {
 			setDataRows(dataAll);
 		}
 	}, [medicationData, currentButton, searchInput, tab]);
+
+	// Get data from the medications table queried by medication ID
+	useEffect(() => {
+		async function getMedicationsByMedicationId() {
+			console.log("searchInput in medID", searchInput);
+			const response = await fetchMedicationsByMedicationId(searchInput);
+			setMedicationDataById(response);
+			console.log("medid response", response);
+		}
+		if (currentButton === "medication-id") {
+			getMedicationsByMedicationId();
+		}
+	}, [currentButton, tab, searchInput]);
 
 	// headers for datagrid
 	const headers = [
@@ -216,6 +230,128 @@ export default function Medications() {
 				</div>
 			) : (
 				<></>
+			)}
+			{/* filter medication by queries */}
+			{tab === 2 && (
+				<div>
+					<div>
+						<label htmlFor="medication-id">Medication ID</label>
+						<input
+							type="radio"
+							id="medication-id"
+							name="radio"
+							value="medication-id"
+						/>
+						<label htmlFor="medname">Medname</label>
+						<input
+							type="radio"
+							id="medname"
+							name="radio"
+							value="medname"
+						/>
+						<label htmlFor="simple-generic-name">
+							Simple Generic Name
+						</label>
+						<input
+							type="radio"
+							id="simple-generic-name"
+							name="radio"
+							value="simple-generic-name"
+						/>
+						<label htmlFor="route">Route</label>
+						<input
+							type="radio"
+							id="route"
+							name="radio"
+							value="route"
+						/>
+					</div>
+					<form onSubmit={handleSubmit}>
+						<label htmlFor="Search">
+							Select field, then search by pressing enter
+						</label>
+						<br />
+						<input
+							id="search-form"
+							type="text"
+							name="search"
+							placeholder="Search field to get value sets"
+							onChange={(event) =>
+								setSearchInput(event.target.value)
+							}
+						/>
+					</form>
+					{/* filter medication by queried medication ID */}
+					{currentButton === "medication-id" &&
+						Object.keys(medicationDataById).length > 0 && (
+							<div>
+								<h3>
+									Medication #{" "}
+									{medicationDataById.medication_id}
+								</h3>
+								<table>
+									<tr>
+										<th>Medication ID</th>
+										<th>
+											{medicationDataById.medication_id}
+										</th>
+									</tr>
+									<tr>
+										<th>Medname</th>
+										<th>{medicationDataById.medname}</th>
+									</tr>
+									<tr>
+										<th>Simple Generic Name</th>
+										<th>
+											{
+												medicationDataById.simple_generic_name
+											}
+										</th>
+									</tr>
+									<tr>
+										<th>Route</th>
+										<th>{medicationDataById.route}</th>
+									</tr>
+								</table>
+								<br />
+								<br />
+								<table>
+									<tr>
+										<th>Outpatients</th>
+										<th>
+											{medicationDataById.outpatients}
+										</th>
+									</tr>
+									<tr>
+										<th>Inpatients</th>
+										<th>{medicationDataById.inpatients}</th>
+									</tr>
+									<tr>
+										<th>Patients</th>
+										<th>{medicationDataById.patients}</th>
+									</tr>
+								</table>
+							</div>
+						)}
+					{/* filter medication by queried medname */}
+					{currentButton === "medname" && (
+						<div>
+							<h4>medname</h4>
+						</div>
+					)}
+					{/* filter medication by simple generic name */}
+					{currentButton === "simple-generic-name" && (
+						<div>
+							<h4>simple-generic-name</h4>
+						</div>
+					)}
+					{/* filter medication by route */}
+					{currentButton === "route" && (
+						<div>
+							<h4>route</h4>
+						</div>
+					)}
+				</div>
 			)}
 		</section>
 	);
