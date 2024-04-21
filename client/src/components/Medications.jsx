@@ -127,7 +127,7 @@ export default function Medications() {
 
 	// Set data to render from queries
 	useEffect(() => {
-		console.log("medicationDataById", medicationDataById);
+		// console.log("medicationDataById", medicationDataById);
 		if (
 			medicationDataById &&
 			Object.keys(medicationDataById).length > 0 &&
@@ -184,7 +184,12 @@ export default function Medications() {
 	// set data to render data set by route query
 	useEffect(() => {
 		// console.log("medicationDataByRoute here", medicationDataByRoute);
-		if (currentButton === "route" && searchInput != "") {
+		if (
+			medicationDataByRoute &&
+			currentButton === "route" &&
+			searchInput != "" &&
+			Object.keys(medicationDataByRoute).length > 0
+		) {
 			const dataAll = medicationDataByRoute.map((medication, index) => {
 				return {
 					id: index,
@@ -510,18 +515,8 @@ export default function Medications() {
 					medicationToDisplay.length > 0 &&
 					searchInput.length != 0 ? (
 						<div style={{ height: "100%", width: "100%" }}>
-							<div style={{ visibility: "hidden" }}>
-								<label htmlFor="all">Show all data</label>
-								<input
-									type="radio"
-									id="all"
-									name="radio"
-									value="all"
-									defaultChecked
-								/>
-							</div>
 							<DataGrid
-								// getRowId={(row) => row.id}
+								getRowId={(row) => row.id}
 								rows={medicationToDisplay}
 								columns={headers}
 								initialState={{

@@ -114,7 +114,7 @@ export default function BetaBlockers() {
 			const response = await fetchBetaBlockerValueSetsByMedicationId(
 				searchInput
 			);
-			console.log("response from FETCH", response);
+			// console.log("response from FETCH", response);
 			setValueSetsQuery(response);
 		}
 		if (currentButton === "medication") {
