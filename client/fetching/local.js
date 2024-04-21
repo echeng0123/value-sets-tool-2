@@ -29,10 +29,12 @@ export const fetchBetaBlockerValueSetsByValueSetName = async (
 	value_set_name
 ) => {
 	try {
+		console.log("current search input in FBBVSBVSN", value_set_name);
 		const response = await fetch(
 			`${base_url}/beta_blocker_value_sets/value_set_name/${value_set_name}`
 		);
 		const result = await response.json();
+		console.log("result here", result);
 		return result;
 	} catch (error) {
 		console.error(error);

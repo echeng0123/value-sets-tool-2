@@ -25,6 +25,7 @@ export default function BetaBlockers() {
 	);
 	const [dataRows, setDataRows] = useState([]);
 	const [dataRowsById, setDataRowsById] = useState([]);
+	const [dataRowsByName, setDataRowsByName] = useState([]);
 	const [tab, setTab] = useState(1);
 
 	function tab1behavior() {
@@ -95,6 +96,7 @@ export default function BetaBlockers() {
 			const response = await fetchBetaBlockerValueSetsByValueSetName(
 				searchInput
 			);
+			// console.log("response from FETCH", response);
 			setValueSetsQuery(response);
 		}
 		if (currentButton === "value-set-name") {
@@ -129,10 +131,18 @@ export default function BetaBlockers() {
 
 	// allows for rendering of value sets searched by a query
 	useEffect(() => {
-		if (Object.keys(valueSetsQuery).length === 3) {
-			setDataRowsById(defineDataArray(valueSetsQuery));
+		// console.log("currentButton in UE", currentButton);
+		// console.log("valueSetsQuery", valueSetsQuery);
+		if (
+			valueSetsQuery &&
+			Object.keys(valueSetsQuery).length > 0 &&
+			currentButton === "value-set-id" &&
+			searchInput != 0
+		) {
+			setDataRowsById(defineDataArrayId(valueSetsQuery));
 		}
-		function defineDataArray(valueSetsQuery) {
+
+		function defineDataArrayId(valueSetsQuery) {
 			let dataRowsArray = {
 				id: 1,
 				value_set_id: valueSetsQuery.value_set_id,
@@ -292,7 +302,8 @@ export default function BetaBlockers() {
 					<div>
 						{/* show value sets by queried value set id */}
 						{currentButton === "value-set-id" &&
-						Object.keys(dataRowsById).length === 5 ? (
+						Object.keys(dataRowsById).length > 0 &&
+						searchInput.length != 0 ? (
 							<div>
 								<h2>Value Set {dataRowsById.value_set_id}</h2>
 								<h3>{dataRowsById.value_set_name}</h3>
@@ -307,6 +318,35 @@ export default function BetaBlockers() {
 										" - "
 									)}
 								</p>
+							</div>
+						) : (
+							<></>
+						)}
+						{currentButton === "value-set-name" &&
+						searchInput.length != 0 ? (
+							<div>
+								<p>hi</p>
+								{dataRowsByName.map((dataRowByName) => {
+									<div>
+										<h2>
+											Value Set{" "}
+											{dataRowByName.value_set_id}
+										</h2>
+										<h3>{dataRowByName.value_set_name}</h3>
+										<h4>
+											Total number of corresponding
+											medications:{" "}
+											{dataRowByName.corresponding_number}
+										</h4>
+										<h4>Medications</h4>
+										<p>
+											{dataRowByName.medications.replaceAll(
+												"|",
+												" - "
+											)}
+										</p>
+									</div>;
+								})}
 							</div>
 						) : (
 							<></>
