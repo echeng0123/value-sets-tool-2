@@ -23,6 +23,7 @@ export default function BetaBlockers() {
 	);
 	const [dataRows, setDataRows] = useState([]);
 	const [dataRowsById, setDataRowsById] = useState([]);
+	const [tab, setTab] = useState(1);
 
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
@@ -152,53 +153,17 @@ export default function BetaBlockers() {
 		<section>
 			<h1>Beta Blockers Value Sets</h1>
 			<div>
-				<div>
-					<label htmlFor="all">Show all data</label>
-					<input
-						type="radio"
-						id="all"
-						name="radio"
-						value="all"
-						defaultChecked
-					/>
-					<label htmlFor="value-set-id">Value Set ID</label>
-					<input
-						type="radio"
-						id="value-set-id"
-						name="radio"
-						value="value-set-id"
-					/>
-					<label htmlFor="value-set-name">Value Set Name</label>
-					<input
-						type="radio"
-						id="value-set-name"
-						name="radio"
-						value="value-set-name"
-					/>
-					<label htmlFor="medication">Medication ID</label>
-					<input
-						type="radio"
-						id="medication"
-						name="radio"
-						value="medication"
-					/>
-				</div>
-				<form onSubmit={handleSubmit}>
-					<label htmlFor="Search">
-						Select field, then search by pressing enter
-					</label>
-					<br />
-					<input
-						id="search-form"
-						type="text"
-						name="search"
-						placeholder="Search field to get value sets"
-						onChange={(event) => setSearchInput(event.target.value)}
-					/>
-				</form>
+				<button id="tab-1" onClick={() => setTab(1)}>
+					All Value Sets
+				</button>
+				<button id="tab2" onClick={() => setTab(2)}>
+					Search Value Sets By Query
+				</button>
 			</div>
+
 			{/* filter all betablockers data */}
-			{valueSets &&
+			{tab === 1 &&
+			valueSets &&
 			currentButton === "all" &&
 			dataRows.length > 0 &&
 			searchInput.length === 0 ? (
@@ -264,21 +229,79 @@ export default function BetaBlockers() {
 				<></>
 			)}
 
-			{/* show value sets by queried value set id */}
-			{currentButton === "value-set-id" &&
-			Object.keys(dataRowsById).length === 5 ? (
+			{/* search value sets by query */}
+			{tab === 2 && (
 				<div>
-					<h2>Value Set {dataRowsById.value_set_id}</h2>
-					<h3>{dataRowsById.value_set_name}</h3>
-					<h4>
-						Total number of corresponding medications:{" "}
-						{dataRowsById.corresponding_number}
-					</h4>
-					<h4>Medications</h4>
-					<p>{dataRowsById.medications.replaceAll("|", " - ")}</p>
+					<div>
+						<label htmlFor="all">Show all data</label>
+						<input
+							type="radio"
+							id="all"
+							name="radio"
+							value="all"
+							defaultChecked
+						/>
+						<label htmlFor="value-set-id">Value Set ID</label>
+						<input
+							type="radio"
+							id="value-set-id"
+							name="radio"
+							value="value-set-id"
+						/>
+						<label htmlFor="value-set-name">Value Set Name</label>
+						<input
+							type="radio"
+							id="value-set-name"
+							name="radio"
+							value="value-set-name"
+						/>
+						<label htmlFor="medication">Medication ID</label>
+						<input
+							type="radio"
+							id="medication"
+							name="radio"
+							value="medication"
+						/>
+					</div>
+					<form onSubmit={handleSubmit}>
+						<label htmlFor="Search">
+							Select field, then search by pressing enter
+						</label>
+						<br />
+						<input
+							id="search-form"
+							type="text"
+							name="search"
+							placeholder="Search field to get value sets"
+							onChange={(event) =>
+								setSearchInput(event.target.value)
+							}
+						/>
+					</form>
+					<div>
+						{/* show value sets by queried value set id */}
+						{currentButton === "value-set-id" &&
+						Object.keys(dataRowsById).length === 5 ? (
+							<div>
+								<h2>Value Set {dataRowsById.value_set_id}</h2>
+								<h3>{dataRowsById.value_set_name}</h3>
+								<h4>
+									Total number of corresponding medications:{" "}
+									{dataRowsById.corresponding_number}
+								</h4>
+								<h4>Medications</h4>
+								<p>
+									{dataRowsById.medications.replaceAll(
+										"|",
+										" - "
+									)}
+								</p>
+							</div>
+						) : (
+							<></>
+						)}
+					</div>
 				</div>
-			) : (
-				<></>
 			)}
 		</section>
 	);
