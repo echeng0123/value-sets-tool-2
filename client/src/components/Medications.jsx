@@ -26,6 +26,10 @@ export default function Medications() {
 	);
 	const [medicationData, setMedicationData] = useState([]);
 	const [medicationDataById, setMedicationDataById] = useState([]);
+	const [
+		medicationDataBySimpleGenericName,
+		setMedicationDataBySimpleGenericName,
+	] = useState([]);
 	const [medicationToDisplay, setMedicationToDisplay] = useState([]);
 
 	function tab1behavior() {
@@ -84,13 +88,28 @@ export default function Medications() {
 	// Get data from the medications table queried by medication ID
 	useEffect(() => {
 		async function getMedicationsByMedicationId() {
-			// console.log("searchInput in medID", searchInput);
 			const response = await fetchMedicationsByMedicationId(searchInput);
 			setMedicationDataById(response);
-			// console.log("medid response", response);
 		}
 		if (currentButton === "medication-id" && searchInput.length != 0) {
 			getMedicationsByMedicationId();
+		}
+	}, [currentButton, tab, searchInput]);
+
+	// Get data from the medications table queried by simple generic name
+	useEffect(() => {
+		async function getMedicationsBySimpleGenericName() {
+			const response = await fetchMedicationsBySimpleGenericName(
+				searchInput
+			);
+			console.log("med by SGN", response);
+			setMedicationDataBySimpleGenericName(response);
+		}
+		if (
+			currentButton === "simple-generic-name" &&
+			searchInput.length != 0
+		) {
+			getMedicationsBySimpleGenericName();
 		}
 	}, [currentButton, tab, searchInput]);
 
@@ -105,7 +124,20 @@ export default function Medications() {
 		) {
 			setMedicationToDisplay(medicationDataById);
 		}
-	}, [medicationDataById, currentButton, searchInput]);
+		if (
+			medicationDataBySimpleGenericName &&
+			Object.keys(medicationDataBySimpleGenericName).length > 0 &&
+			currentButton === "simple-generic-name" &&
+			searchInput != 0
+		) {
+			setMedicationToDisplay(medicationDataBySimpleGenericName);
+		}
+	}, [
+		medicationDataById,
+		medicationDataBySimpleGenericName,
+		currentButton,
+		searchInput,
+	]);
 
 	// headers for datagrid
 	const headers = [
@@ -256,13 +288,6 @@ export default function Medications() {
 							name="radio"
 							value="medication-id"
 						/>
-						<label htmlFor="medname">Medname</label>
-						<input
-							type="radio"
-							id="medname"
-							name="radio"
-							value="medname"
-						/>
 						<label htmlFor="simple-generic-name">
 							Simple Generic Name
 						</label>
@@ -350,18 +375,72 @@ export default function Medications() {
 								</table>
 							</div>
 						)}
-					{/* filter medication by queried medname */}
-					{currentButton === "medname" && (
-						<div>
-							<h4>medname</h4>
-						</div>
-					)}
 					{/* filter medication by simple generic name */}
-					{currentButton === "simple-generic-name" && (
-						<div>
-							<h4>simple-generic-name</h4>
-						</div>
-					)}
+					{currentButton === "simple-generic-name" &&
+						medicationToDisplay.length > 0 &&
+						searchInput.length != 0 && (
+							<div>
+								<h3>
+									Medication
+									{medicationToDisplay.simple_generic_name}
+								</h3>
+
+								{medicationToDisplay.map((medication) => {
+									return (
+										<div>
+											<table>
+												<tr>
+													<th>Medication ID</th>
+													<th>
+														{
+															medication.medication_id
+														}
+													</th>
+												</tr>
+												<tr>
+													<th>Medname</th>
+													<th>
+														{medication.medname}
+													</th>
+												</tr>
+												<tr>
+													<th>Simple Generic Name</th>
+													<th>
+														{
+															medication.simple_generic_name
+														}
+													</th>
+												</tr>
+												<tr>
+													<th>Route</th>
+													<th>{medication.route}</th>
+												</tr>
+												<tr>
+													<th>Outpatients</th>
+													<th>
+														{medication.outpatients}
+													</th>
+												</tr>
+												<tr>
+													<th>Inpatients</th>
+													<th>
+														{medication.inpatients}
+													</th>
+												</tr>
+												<tr>
+													<th>Patients</th>
+													<th>
+														{medication.patients}
+													</th>
+												</tr>
+											</table>
+											<br />
+											<br />
+										</div>
+									);
+								})}
+							</div>
+						)}
 					{/* filter medication by route */}
 					{currentButton === "route" && (
 						<div>
