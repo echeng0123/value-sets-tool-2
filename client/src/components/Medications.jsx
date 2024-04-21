@@ -30,6 +30,7 @@ export default function Medications() {
 		medicationDataBySimpleGenericName,
 		setMedicationDataBySimpleGenericName,
 	] = useState([]);
+	const [medicationDataByRoute, setMedicationDataByRoute] = useState([]);
 	const [medicationToDisplay, setMedicationToDisplay] = useState([]);
 
 	function tab1behavior() {
@@ -102,7 +103,6 @@ export default function Medications() {
 			const response = await fetchMedicationsBySimpleGenericName(
 				searchInput
 			);
-			console.log("med by SGN", response);
 			setMedicationDataBySimpleGenericName(response);
 		}
 		if (
@@ -110,6 +110,18 @@ export default function Medications() {
 			searchInput.length != 0
 		) {
 			getMedicationsBySimpleGenericName();
+		}
+	}, [currentButton, tab, searchInput]);
+
+	// Get data from the medications table queried by route
+	useEffect(() => {
+		async function getMedicationsByRoute() {
+			const response = await fetchMedicationsByRoute(searchInput);
+			// console.log("med by SGN", response);
+			setMedicationDataByRoute(response);
+		}
+		if (currentButton === "route" && searchInput.length != 0) {
+			getMedicationsByRoute();
 		}
 	}, [currentButton, tab, searchInput]);
 
@@ -123,8 +135,7 @@ export default function Medications() {
 			searchInput != 0
 		) {
 			setMedicationToDisplay(medicationDataById);
-		}
-		if (
+		} else if (
 			medicationDataBySimpleGenericName &&
 			Object.keys(medicationDataBySimpleGenericName).length > 0 &&
 			currentButton === "simple-generic-name" &&
@@ -132,12 +143,64 @@ export default function Medications() {
 		) {
 			setMedicationToDisplay(medicationDataBySimpleGenericName);
 		}
+
+		// else if (
+		// 	medicationDataByRoute &&
+		// 	Object.keys(medicationDataByRoute).length > 0 &&
+		// 	currentButton === "route" &&
+		// 	searchInput != 0
+		// ) {
+		// 	setMedicationToDisplay(defineRouteData(medicationDataByRoute));
+		// }
+
+		// function defineRouteData(medicationDataByRoute) {
+		// 	// console.log("medicationDataByRoute", medicationDataByRoute);
+		// 	if (searchInput.length > 0 && currentButton === "route") {
+		// 		const dataRowsArray = medicationDataByRoute.map(
+		// 			(medication, index) => {
+		// 				return {
+		// 					id: index,
+		// 					medication_id: medication.medication_id,
+		// 					medname: medication.medname,
+		// 					simple_generic_name: medication.simple_generic_name,
+		// 					route: medication.route,
+		// 					outpatients: medication.outpatients,
+		// 					inpatients: medication.inpatients,
+		// 					patients: medication.patients,
+		// 				};
+		// 			}
+		// 		);
+		// 		console.log("dataRowsArray", dataRowsArray);
+		// 		return dataRowsArray;
+		// 	}
+		// }
 	}, [
 		medicationDataById,
 		medicationDataBySimpleGenericName,
 		currentButton,
 		searchInput,
 	]);
+
+	// set data to render data set by route query
+	useEffect(() => {
+		// console.log("medicationDataByRoute here", medicationDataByRoute);
+		if (currentButton === "route" && searchInput != "") {
+			const dataAll = medicationDataByRoute.map((medication, index) => {
+				return {
+					id: index,
+					medication_id: medication.medication_id,
+					medname: medication.medname,
+					simple_generic_name: medication.simple_generic_name,
+					route: medication.route,
+					outpatients: medication.outpatients,
+					inpatients: medication.inpatients,
+					patients: medication.patients,
+				};
+			});
+			console.log("dataAll", dataAll);
+			setMedicationToDisplay(dataAll);
+		}
+	}, [medicationDataByRoute, currentButton, searchInput]);
 
 	// headers for datagrid
 	const headers = [
@@ -442,10 +505,87 @@ export default function Medications() {
 							</div>
 						)}
 					{/* filter medication by route */}
-					{currentButton === "route" && (
-						<div>
-							<h4>route</h4>
+					{medicationToDisplay &&
+					currentButton === "route" &&
+					medicationToDisplay.length > 0 &&
+					searchInput.length != 0 ? (
+						<div style={{ height: "100%", width: "100%" }}>
+							<div style={{ visibility: "hidden" }}>
+								<label htmlFor="all">Show all data</label>
+								<input
+									type="radio"
+									id="all"
+									name="radio"
+									value="all"
+									defaultChecked
+								/>
+							</div>
+							<DataGrid
+								// getRowId={(row) => row.id}
+								rows={medicationToDisplay}
+								columns={headers}
+								initialState={{
+									pagination: {
+										paginationModel: {
+											page: 0,
+											pageSize: 10,
+										},
+									},
+								}}
+								pageSizeOptions={[5, 10, 20, 50]}
+								checkboxSelection
+								onRowSelectionModelChange={(ids) => {
+									selectionModelChange(ids);
+								}}
+								sx={{
+									boxShadow: 2,
+									border: 2,
+									backgroundColor: "rgba(255, 255, 255, 0.8)",
+									color: "black",
+									borderColor: "primary.light",
+									"& .MuiDataGrid-cell:hover": {
+										color: "primary.main",
+									},
+									width: "100%",
+									// fontFamily: "Karla",
+								}}
+							/>
+							<h3>Selected data appears below</h3>
+							{selectedRowDataToDisplay != [] &&
+							selectedRowDataToDisplay.length > 0 ? (
+								<DataGrid
+									getRowId={(row) => row.id}
+									rows={selectedRowDataToDisplay}
+									columns={headers}
+									initialState={{
+										pagination: {
+											paginationModel: {
+												page: 0,
+												pageSize: 5,
+											},
+										},
+									}}
+									pageSizeOptions={[5, 10]}
+									checkboxSelection
+									sx={{
+										boxShadow: 2,
+										border: 2,
+										backgroundColor:
+											"rgba(255, 255, 255, 0.8)",
+										color: "black",
+										borderColor: "primary.light",
+										"& .MuiDataGrid-cell:hover": {
+											color: "primary.main",
+										},
+										// fontFamily: "Karla",
+									}}
+								/>
+							) : (
+								<></>
+							)}
 						</div>
+					) : (
+						<></>
 					)}
 				</div>
 			)}
