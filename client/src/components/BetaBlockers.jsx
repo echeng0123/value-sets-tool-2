@@ -136,6 +136,7 @@ export default function BetaBlockers() {
 		if (
 			valueSetsQuery &&
 			Object.keys(valueSetsQuery).length > 0 &&
+			Object.keys(valueSetsQuery).length < 12 &&
 			currentButton === "value-set-id" &&
 			searchInput != 0
 		) {
@@ -143,6 +144,7 @@ export default function BetaBlockers() {
 		} else if (
 			valueSetsQuery &&
 			Object.keys(valueSetsQuery).length > 0 &&
+			Object.keys(valueSetsQuery).length < 12 &&
 			currentButton === "value-set-name" &&
 			searchInput != 0
 		) {
@@ -150,6 +152,7 @@ export default function BetaBlockers() {
 		}
 
 		function defineDataArrayId(valueSetsQuery) {
+			console.log("valueSetsQuery", valueSetsQuery);
 			let dataRowsArray = {
 				id: 1,
 				value_set_id: valueSetsQuery.value_set_id,
