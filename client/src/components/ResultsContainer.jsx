@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 export default function ResultsContainer({ currentButton, valueSets }) {
-	console.log("currentButton inside results container is: ", currentButton);
-	console.log("valueSets in container:", valueSets);
+	// console.log("currentButton inside results container is: ", currentButton);
+	// console.log("valueSets in container:", valueSets);
 	return (
 		<section>
 			<h3>Value Sets corresponding to search query</h3>
