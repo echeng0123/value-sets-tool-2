@@ -6,14 +6,7 @@ import {
 	fetchMedicationsBySimpleGenericName,
 	fetchMedicationsByRoute,
 } from "../../fetching/local";
-import {
-	Table,
-	TableHead,
-	TableRow,
-	TableCell,
-	TableBody,
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 export default function Medications() {
 	const [tab, setTab] = useState(1);
@@ -146,37 +139,6 @@ export default function Medications() {
 		) {
 			setMedicationToDisplay(medicationDataBySimpleGenericName);
 		}
-
-		// else if (
-		// 	medicationDataByRoute &&
-		// 	Object.keys(medicationDataByRoute).length > 0 &&
-		// 	currentButton === "route" &&
-		// 	searchInput != 0
-		// ) {
-		// 	setMedicationToDisplay(defineRouteData(medicationDataByRoute));
-		// }
-
-		// function defineRouteData(medicationDataByRoute) {
-		// 	// console.log("medicationDataByRoute", medicationDataByRoute);
-		// 	if (searchInput.length > 0 && currentButton === "route") {
-		// 		const dataRowsArray = medicationDataByRoute.map(
-		// 			(medication, index) => {
-		// 				return {
-		// 					id: index,
-		// 					medication_id: medication.medication_id,
-		// 					medname: medication.medname,
-		// 					simple_generic_name: medication.simple_generic_name,
-		// 					route: medication.route,
-		// 					outpatients: medication.outpatients,
-		// 					inpatients: medication.inpatients,
-		// 					patients: medication.patients,
-		// 				};
-		// 			}
-		// 		);
-		// 		console.log("dataRowsArray", dataRowsArray);
-		// 		return dataRowsArray;
-		// 	}
-		// }
 	}, [
 		medicationDataById,
 		medicationDataBySimpleGenericName,
@@ -186,7 +148,7 @@ export default function Medications() {
 
 	// set data to render data set by route query
 	useEffect(() => {
-		console.log("medicationDataByRoute here", medicationDataByRoute);
+		// console.log("medicationDataByRoute here", medicationDataByRoute);
 		if (
 			medicationDataByRoute &&
 			currentButton === "route" &&
@@ -205,7 +167,7 @@ export default function Medications() {
 					patients: medication.patients,
 				};
 			});
-			console.log("dataAll", dataAll);
+			// console.log("dataAll", dataAll);
 			setMedicationToDisplayRoute(dataAll);
 		} else if (
 			!medicationDataByRoute &&
@@ -331,6 +293,7 @@ export default function Medications() {
 							width: "100%",
 							// fontFamily: "Karla",
 						}}
+						slots={{ toolbar: GridToolbar }}
 					/>
 					<h3>Selected data appears below</h3>
 					{selectedRowDataToDisplay != [] &&
@@ -357,6 +320,7 @@ export default function Medications() {
 								},
 								// fontFamily: "Karla",
 							}}
+							slots={{ toolbar: GridToolbar }}
 						/>
 					) : (
 						<></>
@@ -564,6 +528,7 @@ export default function Medications() {
 									width: "100%",
 									// fontFamily: "Karla",
 								}}
+								slots={{ toolbar: GridToolbar }}
 							/>
 							<h3>Selected data appears below</h3>
 							{selectedRowDataToDisplay != [] &&
@@ -594,6 +559,7 @@ export default function Medications() {
 										},
 										// fontFamily: "Karla",
 									}}
+									slots={{ toolbar: GridToolbar }}
 								/>
 							) : (
 								<></>

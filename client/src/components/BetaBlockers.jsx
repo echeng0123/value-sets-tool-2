@@ -6,14 +6,7 @@ import {
 	fetchBetaBlockerValueSetsByValueSetName,
 	fetchBetaBlockerValueSetsByMedicationId,
 } from "../../fetching/local";
-import {
-	Table,
-	TableHead,
-	TableRow,
-	TableCell,
-	TableBody,
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 export default function BetaBlockers() {
 	const [searchInput, setSearchInput] = useState("");
@@ -259,6 +252,7 @@ export default function BetaBlockers() {
 							width: "100%",
 							// fontFamily: "Karla",
 						}}
+						slots={{ toolbar: GridToolbar }}
 					/>
 					<h3>Selected data appears below</h3>
 					{selectedRowDataToDisplay != [] &&
@@ -285,6 +279,7 @@ export default function BetaBlockers() {
 								},
 								// fontFamily: "Karla",
 							}}
+							slots={{ toolbar: GridToolbar }}
 						/>
 					) : (
 						<></>
