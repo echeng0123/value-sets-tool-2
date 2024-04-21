@@ -98,7 +98,6 @@ export default function BetaBlockers() {
 		// console.log("medications", valueSets.medications);
 
 		if (Object.keys(valueSets).length === 3) {
-			console.log("HELLO");
 			setDataRowsById(defineDataArray(valueSets));
 		}
 
@@ -118,11 +117,9 @@ export default function BetaBlockers() {
 	}, [valueSets, currentButton, searchInput]);
 
 	// generating datagrid for option "show all"
-
 	useEffect(() => {
 		// const dataRows = [];
-		if (valueSets && currentButton === "all") {
-			console.log("fucking hello?");
+		if (valueSets && currentButton === "all" && searchInput.length == 0) {
 			const dataRowsNew = valueSets?.map((valueSet, index) => {
 				return {
 					id: index,
@@ -136,7 +133,7 @@ export default function BetaBlockers() {
 			});
 			setDataRows(dataRowsNew);
 		}
-	}, [valueSets, currentButton]);
+	}, [valueSets, currentButton, searchInput]);
 
 	// console.log("dataRows", dataRows);
 
@@ -201,7 +198,10 @@ export default function BetaBlockers() {
 				</form>
 			</div>
 			{/* filter all betablockers data */}
-			{valueSets && currentButton === "all" && dataRows.length > 0 ? (
+			{valueSets &&
+			currentButton === "all" &&
+			dataRows.length > 0 &&
+			searchInput.length === 0 ? (
 				<div style={{ height: "100%", width: "100%" }}>
 					<DataGrid
 						getRowId={(row) => row.id}
@@ -265,35 +265,17 @@ export default function BetaBlockers() {
 			)}
 
 			{/* show value sets by queried value set id */}
-			{valueSets &&
-			Object.keys(valueSets).length === 3 &&
-			currentButton === "value-set-id" &&
+			{currentButton === "value-set-id" &&
 			Object.keys(dataRowsById).length === 5 ? (
-				<div style={{ height: "100%", width: "100%" }}>
-					<DataGrid
-						getRowId={(row) => row.id}
-						rows={dataRowsById}
-						columns={headers}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 5 },
-							},
-						}}
-						pageSizeOptions={[5, 10]}
-						checkboxSelection
-						sx={{
-							boxShadow: 2,
-							border: 2,
-							backgroundColor: "rgba(255, 255, 255, 0.8)",
-							color: "black",
-							borderColor: "primary.light",
-							"& .MuiDataGrid-cell:hover": {
-								color: "primary.main",
-							},
-							width: "100%",
-							// fontFamily: "Karla",
-						}}
-					/>
+				<div>
+					<h2>Value Set {dataRowsById.value_set_id}</h2>
+					<h3>{dataRowsById.value_set_name}</h3>
+					<h4>
+						Total number of corresponding medications:{" "}
+						{dataRowsById.corresponding_number}
+					</h4>
+					<h4>Medications</h4>
+					<p>{dataRowsById.medications.replaceAll("|", " - ")}</p>
 				</div>
 			) : (
 				<></>
@@ -301,3 +283,38 @@ export default function BetaBlockers() {
 		</section>
 	);
 }
+
+// code for keeping queried value set id data in same DataGrid format; keep for future
+// {valueSets &&
+//     Object.keys(valueSets).length === 3 &&
+//     currentButton === "value-set-id" &&
+//     Object.keys(dataRowsById).length === 5 ? (
+//         <div style={{ height: "100%", width: "100%" }}>
+//             <DataGrid
+//                 getRowId={(row) => row.id}
+//                 rows={dataRowsById}
+//                 columns={headers}
+//                 initialState={{
+//                     pagination: {
+//                         paginationModel: { page: 0, pageSize: 5 },
+//                     },
+//                 }}
+//                 pageSizeOptions={[5, 10]}
+//                 checkboxSelection
+//                 sx={{
+//                     boxShadow: 2,
+//                     border: 2,
+//                     backgroundColor: "rgba(255, 255, 255, 0.8)",
+//                     color: "black",
+//                     borderColor: "primary.light",
+//                     "& .MuiDataGrid-cell:hover": {
+//                         color: "primary.main",
+//                     },
+//                     width: "100%",
+//                     // fontFamily: "Karla",
+//                 }}
+//             />
+//         </div>
+//     ) : (
+//         <></>
+//     )}
