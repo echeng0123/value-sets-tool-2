@@ -347,6 +347,7 @@ export default function Medications() {
 							id="medication-id"
 							name="radio"
 							value="medication-id"
+							className="radio-button"
 						/>
 						<label htmlFor="simple-generic-name">
 							Simple Generic Name
@@ -356,6 +357,7 @@ export default function Medications() {
 							id="simple-generic-name"
 							name="radio"
 							value="simple-generic-name"
+							className="radio-button"
 						/>
 						<label htmlFor="route">Route</label>
 						<input
@@ -363,6 +365,7 @@ export default function Medications() {
 							id="route"
 							name="radio"
 							value="route"
+							className="radio-button"
 						/>
 					</div>
 					<form

@@ -4,14 +4,16 @@ export default function ResultsContainer({ currentButton, valueSets }) {
 	// console.log("valueSets in container:", valueSets);
 	return (
 		<section>
-			<h3>Value Sets corresponding to search query</h3>
 			<div id="results-container">
+				<h2>
+					<u>Value Sets corresponding to search query</u>
+				</h2>
 				{currentButton && valueSets.length > 0 ? (
 					<div>
 						{valueSets.map((response) => {
 							return (
 								<div>
-									<h2>{response}</h2>
+									<h3>{response}</h3>
 								</div>
 							);
 						})}

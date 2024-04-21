@@ -198,7 +198,7 @@ export default function BetaBlockers() {
 
 	return (
 		<section>
-			<h1>Beta Blockers Value Sets</h1>
+			<h1 className="page-title">Beta Blockers Value Sets</h1>
 			<div className="tab-container">
 				<button
 					id="tab-1"
@@ -307,6 +307,7 @@ export default function BetaBlockers() {
 							id="value-set-id"
 							name="radio"
 							value="value-set-id"
+							className="radio-button"
 						/>
 						<label htmlFor="value-set-name">Value Set Name</label>
 						<input
@@ -314,6 +315,7 @@ export default function BetaBlockers() {
 							id="value-set-name"
 							name="radio"
 							value="value-set-name"
+							className="radio-button"
 						/>
 						<label htmlFor="medication">Medication ID</label>
 						<input
@@ -321,6 +323,7 @@ export default function BetaBlockers() {
 							id="medication"
 							name="radio"
 							value="medication"
+							className="radio-button"
 						/>
 					</div>
 					<form
@@ -343,19 +346,21 @@ export default function BetaBlockers() {
 						/>
 					</form>
 					{/* show value sets by queried value set id */}
-					<div>
+					<div className="single-card-container">
 						{currentButton === "value-set-id" &&
 						Object.keys(dataRowsById).length > 0 &&
 						searchInput.length != 0 ? (
 							<div>
 								<h2>Value Set {dataRowsById.value_set_id}</h2>
-								<h3>{dataRowsById.value_set_name}</h3>
-								<h4>
+								<h3>Name: {dataRowsById.value_set_name}</h3>
+								<h3>
 									Total number of corresponding medications:{" "}
 									{dataRowsById.corresponding_number}
-								</h4>
-								<h4>Medications</h4>
-								<p>
+								</h3>
+								<h3>
+									<u>Medications</u>
+								</h3>
+								<p className="medications-list">
 									{dataRowsById.medications.replaceAll(
 										"|",
 										" - "
