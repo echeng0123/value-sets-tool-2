@@ -1,8 +1,9 @@
 export default function Footer() {
 	return (
-		<section>
-			<p>FOOTER HERE</p>
-			<button>Back to Top</button>
+		<section id="footer-container">
+			<button>
+				<a href="#top">Back to Top</a>
+			</button>
 		</section>
 	);
 }

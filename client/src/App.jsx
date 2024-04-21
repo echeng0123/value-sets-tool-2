@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 
 function App() {
 	return (
-		<section>
+		<section id="app-container">
 			<h1>TITLE HERE?</h1>
 			<NavBar />
 			<MainSection />

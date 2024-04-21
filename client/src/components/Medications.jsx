@@ -241,11 +241,19 @@ export default function Medications() {
 	return (
 		<section>
 			<h1>Medications</h1>
-			<div>
-				<button id="tab-1" onClick={() => tab1behavior()}>
+			<div className="tab-container">
+				<button
+					id="tab-1"
+					className="button-tab"
+					onClick={() => tab1behavior()}
+				>
 					All Medication Data
 				</button>
-				<button id="tab2" onClick={() => setTab(2)}>
+				<button
+					id="tab2"
+					className="button-tab"
+					onClick={() => setTab(2)}
+				>
 					Search Medication Data By Query
 				</button>
 			</div>
@@ -332,7 +340,7 @@ export default function Medications() {
 			{/* filter medication by queries */}
 			{tab === 2 && (
 				<div>
-					<div>
+					<div className="radio-buttons-container">
 						<label htmlFor="medication-id">Medication ID</label>
 						<input
 							type="radio"
@@ -357,7 +365,10 @@ export default function Medications() {
 							value="route"
 						/>
 					</div>
-					<form onSubmit={handleSubmit}>
+					<form
+						onSubmit={handleSubmit}
+						className="search-form-container"
+					>
 						<label htmlFor="Search">
 							Select field, then search by pressing enter
 						</label>

@@ -199,11 +199,19 @@ export default function BetaBlockers() {
 	return (
 		<section>
 			<h1>Beta Blockers Value Sets</h1>
-			<div>
-				<button id="tab-1" onClick={() => tab1behavior()}>
+			<div className="tab-container">
+				<button
+					id="tab-1"
+					className="button-tab"
+					onClick={() => tab1behavior()}
+				>
 					All Value Sets
 				</button>
-				<button id="tab2" onClick={() => setTab(2)}>
+				<button
+					id="tab2"
+					className="button-tab"
+					onClick={() => setTab(2)}
+				>
 					Search Value Sets By Query
 				</button>
 			</div>
@@ -292,7 +300,7 @@ export default function BetaBlockers() {
 			{/* search value sets by query */}
 			{tab === 2 && (
 				<div>
-					<div>
+					<div className="radio-buttons-container">
 						<label htmlFor="value-set-id">Value Set ID</label>
 						<input
 							type="radio"
@@ -315,7 +323,10 @@ export default function BetaBlockers() {
 							value="medication"
 						/>
 					</div>
-					<form onSubmit={handleSubmit}>
+					<form
+						onSubmit={handleSubmit}
+						className="search-form-container"
+					>
 						<label htmlFor="Search">
 							Select field, then search by pressing enter
 						</label>

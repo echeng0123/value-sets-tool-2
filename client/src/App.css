@@ -42,8 +42,49 @@
 }
 
 /* CONTAINERS */
+#app-container{
+    border: 1px solid red;
+    margin: 1rem;
+    padding: 1rem;
+}
 
+#main-section-container{
+    border: 3px dotted goldenrod;
+    margin: 2rem;
+    padding: 2rem;
+}
 
+#navbar-container{
+    border: 1px solid rgb(15, 238, 15);
+    margin: 2rem;
+    padding: 1rem;
+}
+
+#footer-container{
+    border: 1px dashed rgb(226, 179, 187);
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.search-form-container{
+    border: 1px solid rgb(255, 0, 149);
+}
+
+.radio-buttons-container{
+    border: 1px dashed rgb(255, 0, 149);
+}
+
+#results-container{
+    border: 1px dashed yellow;
+}
+
+.tab-container{
+    border: 2px solid white;
+}
+
+.button-tab{
+    border: 3px dotted red;
+}
 
 /* COMPONENTS ---------------------- */
 .data-table{
@@ -56,20 +97,3 @@
 .table-row{
     border: 1px solid pink;
 }
-
-.MuiDataGrid-root {
-    background-color: rgba(255, 255, 255, 0.8);
-    width: 100%;
-    overflow-x: 'scroll';
-
-}
-
-/*
-.Mui-checked{
-    background-color: rgba(255,255,255,1)
-}
-
-.MuiCheckbox-root.Mui-checked:not(.MuiCheckbox-indeterminate) {
-    background-color: '#1890ff';
-    border-color: '#1890ff';
-  } */

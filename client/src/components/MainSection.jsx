@@ -7,7 +7,7 @@ import Medications from "./Medications";
 
 export default function MainSection() {
 	return (
-		<section>
+		<section id="main-section-container">
 			<Routes>
 				<Route path="/" element={<ValueSetComparisonTool />}></Route>
 				<Route path="/beta-blockers" element={<BetaBlockers />}></Route>

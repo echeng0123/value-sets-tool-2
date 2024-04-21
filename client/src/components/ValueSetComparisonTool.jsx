@@ -74,7 +74,7 @@ export default function ValueSetComparisonTool() {
 		<section>
 			<h1>Value Set Comparison Tool</h1>
 			<div>
-				<div>
+				<div className="radio-buttons-container">
 					<label htmlFor="simple-generic-name">
 						Simple Generic Name
 					</label>
@@ -94,7 +94,7 @@ export default function ValueSetComparisonTool() {
 					<label htmlFor="route">Route</label>
 					<input type="radio" id="route" name="radio" value="route" />
 				</div>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className="search-form-container">
 					<label htmlFor="Search">
 						Select field, then search by pressing enter
 					</label>
