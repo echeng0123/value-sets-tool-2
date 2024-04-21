@@ -16,6 +16,7 @@ import { DataGrid } from "@mui/x-data-grid";
 export default function BetaBlockers() {
 	const [searchInput, setSearchInput] = useState("");
 	const [valueSets, setValueSets] = useState([]);
+	const [valueSetsQuery, setValueSetsQuery] = useState([]);
 	const [results, setResults] = useState([]);
 	const [currentButton, setCurrentButton] = useState("all");
 	const [selectedRowDataToDisplay, setSelectedRowDataToDisplay] = useState(
@@ -24,6 +25,12 @@ export default function BetaBlockers() {
 	const [dataRows, setDataRows] = useState([]);
 	const [dataRowsById, setDataRowsById] = useState([]);
 	const [tab, setTab] = useState(1);
+
+	function tab1behavior() {
+		setTab(1);
+		setSearchInput("");
+		setCurrentButton("all");
+	}
 
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
@@ -46,10 +53,29 @@ export default function BetaBlockers() {
 			const response = await fetchAllBetaBlockerValueSets();
 			setValueSets(response);
 		}
-		if (currentButton === "all") {
+		if (currentButton === "all" && tab === 1) {
 			getAllBetaBlockerValueSets();
 		}
-	}, [currentButton]);
+	}, [currentButton, tab]);
+
+	// set data to render all value sets once obtained from API
+	useEffect(() => {
+		if (tab === 1 && currentButton === "all" && searchInput === "") {
+			console.log("currentValueSets in UEEEEE", valueSets);
+			const dataAll = valueSets.map((valueSet, index) => {
+				return {
+					id: index,
+					value_set_id: valueSet.value_set_id,
+					value_set_name: valueSet.value_set_name,
+					corresponding_number: valueSet.medications
+						.replaceAll("|", ",")
+						.split(",").length,
+					medications: valueSet.medications,
+				};
+			});
+			setDataRows(dataAll);
+		}
+	}, [valueSets, currentButton, searchInput, tab]);
 
 	// Get value sets by value set ID
 	useEffect(() => {
@@ -59,7 +85,7 @@ export default function BetaBlockers() {
 				searchInput
 			);
 			// console.log("response", response);
-			setValueSets(response);
+			setValueSetsQuery(response);
 		}
 		if (currentButton === "value-set-id") {
 			getBetaBlockerValueSetsByValueSetId();
@@ -94,47 +120,28 @@ export default function BetaBlockers() {
 	useEffect(() => {
 		// console.log("current value sets", valueSets);
 		console.log("searchInput in UE", searchInput);
-		console.log("CVS length", Object.keys(valueSets).length);
+		console.log("CVS length", Object.keys(valueSetsQuery).length);
 
 		// console.log("medications", valueSets.medications);
 
-		if (Object.keys(valueSets).length === 3) {
-			setDataRowsById(defineDataArray(valueSets));
+		if (Object.keys(valueSetsQuery).length === 3) {
+			setDataRowsById(defineDataArray(valueSetsQuery));
 		}
 
-		function defineDataArray(valueSets) {
+		function defineDataArray(valueSetsQuery) {
 			let dataRowsArray = {
 				id: 1,
-				value_set_id: valueSets.value_set_id,
-				value_set_name: valueSets.value_set_name,
-				corresponding_number: valueSets.medications
+				value_set_id: valueSetsQuery.value_set_id,
+				value_set_name: valueSetsQuery.value_set_name,
+				corresponding_number: valueSetsQuery.medications
 					.replaceAll("|", ",")
 					.split(",").length,
-				medications: valueSets.medications,
+				medications: valueSetsQuery.medications,
 			};
 			console.log("dataRowsArray", dataRowsArray);
 			return dataRowsArray;
 		}
-	}, [valueSets, currentButton, searchInput]);
-
-	// generating datagrid for option "show all"
-	useEffect(() => {
-		// const dataRows = [];
-		if (valueSets && currentButton === "all" && searchInput.length == 0) {
-			const dataRowsNew = valueSets?.map((valueSet, index) => {
-				return {
-					id: index,
-					value_set_id: valueSet.value_set_id,
-					value_set_name: valueSet.value_set_name,
-					corresponding_number: valueSet.medications
-						.replaceAll("|", ",")
-						.split(",").length,
-					medications: valueSet.medications,
-				};
-			});
-			setDataRows(dataRowsNew);
-		}
-	}, [valueSets, currentButton, searchInput]);
+	}, [valueSetsQuery, currentButton, searchInput]);
 
 	// console.log("dataRows", dataRows);
 
@@ -153,13 +160,14 @@ export default function BetaBlockers() {
 		<section>
 			<h1>Beta Blockers Value Sets</h1>
 			<div>
-				<button id="tab-1" onClick={() => setTab(1)}>
+				<button id="tab-1" onClick={() => tab1behavior()}>
 					All Value Sets
 				</button>
 				<button id="tab2" onClick={() => setTab(2)}>
 					Search Value Sets By Query
 				</button>
 			</div>
+			<br />
 
 			{/* filter all betablockers data */}
 			{tab === 1 &&
@@ -168,8 +176,18 @@ export default function BetaBlockers() {
 			dataRows.length > 0 &&
 			searchInput.length === 0 ? (
 				<div style={{ height: "100%", width: "100%" }}>
+					<div style={{ visibility: "hidden" }}>
+						<label htmlFor="all">Show all data</label>
+						<input
+							type="radio"
+							id="all"
+							name="radio"
+							value="all"
+							defaultChecked
+						/>
+					</div>
 					<DataGrid
-						getRowId={(row) => row.id}
+						// getRowId={(row) => row.id}
 						rows={dataRows}
 						columns={headers}
 						initialState={{
@@ -233,14 +251,6 @@ export default function BetaBlockers() {
 			{tab === 2 && (
 				<div>
 					<div>
-						<label htmlFor="all">Show all data</label>
-						<input
-							type="radio"
-							id="all"
-							name="radio"
-							value="all"
-							defaultChecked
-						/>
 						<label htmlFor="value-set-id">Value Set ID</label>
 						<input
 							type="radio"
@@ -341,3 +351,25 @@ export default function BetaBlockers() {
 //     ) : (
 //         <></>
 //     )}
+
+// generating datagrid for option "show all"
+// useEffect(() => {
+// 	console.log("valueSets on tab1", valueSets);
+// 	console.log("currentTab", tab);
+// 	console.log("currentButton", currentButton);
+// 	console.log("searchInput", searchInput);
+// 	// if (valueSets && currentButton === "all" && searchInput.length == 0) {
+// 	// 	const dataRowsNew = valueSets.map((valueSet, index) => {
+// 	// 		return {
+// 	// 			id: index,
+// 	// 			value_set_id: valueSet.value_set_id,
+// 	// 			value_set_name: valueSet.value_set_name,
+// 	// 			corresponding_number: valueSet.medications
+// 	// 				.replaceAll("|", ",")
+// 	// 				.split(",").length,
+// 	// 			medications: valueSet.medications,
+// 	// 		};
+// 	// 	});
+// 	// 	setDataRows(dataRowsNew);
+// 	// }
+// }, [valueSets, currentButton, searchInput, tab]);
