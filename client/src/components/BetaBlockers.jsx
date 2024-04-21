@@ -1,6 +1,9 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect, Fragment } from "react";
-import { fetchAllBetaBlockerValueSets } from "../../fetching/local";
+import { useState, useEffect, useMemo } from "react";
+import {
+	fetchAllBetaBlockerValueSets,
+	fetchBetaBlockerValueSetsByValueSetId,
+} from "../../fetching/local";
 import {
 	Table,
 	TableHead,
@@ -18,6 +21,8 @@ export default function BetaBlockers() {
 	const [selectedRowDataToDisplay, setSelectedRowDataToDisplay] = useState(
 		[]
 	);
+	const [dataRows, setDataRows] = useState([]);
+	const [dataRowsById, setDataRowsById] = useState([]);
 
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
@@ -38,7 +43,6 @@ export default function BetaBlockers() {
 	useEffect(() => {
 		async function getAllBetaBlockerValueSets() {
 			const response = await fetchAllBetaBlockerValueSets();
-			// console.log("response from FABBVS", response);
 			setValueSets(response);
 		}
 		if (currentButton === "all") {
@@ -46,6 +50,22 @@ export default function BetaBlockers() {
 		}
 	}, [currentButton]);
 
+	// Get value sets by value set ID
+	useEffect(() => {
+		async function getBetaBlockerValueSetsByValueSetId() {
+			// console.log("current search input", searchInput);
+			const response = await fetchBetaBlockerValueSetsByValueSetId(
+				searchInput
+			);
+			// console.log("response", response);
+			setValueSets(response);
+		}
+		if (currentButton === "value-set-id") {
+			getBetaBlockerValueSetsByValueSetId();
+		}
+	}, [currentButton, searchInput]);
+
+	// headers for datagrid
 	const headers = [
 		{
 			field: "value_set_id",
@@ -70,27 +90,63 @@ export default function BetaBlockers() {
 		},
 	];
 
-	const dataRows = valueSets.map((valueSet, index) => {
-		return {
-			id: index,
-			value_set_id: valueSet.value_set_id,
-			value_set_name: valueSet.value_set_name,
-			corresponding_number: valueSet.medications
-				.replaceAll("|", ",")
-				.split(",").length,
-			medications: valueSet.medications,
-		};
-	});
+	useEffect(() => {
+		// console.log("current value sets", valueSets);
+		console.log("searchInput in UE", searchInput);
+		console.log("CVS length", Object.keys(valueSets).length);
+
+		// console.log("medications", valueSets.medications);
+
+		if (Object.keys(valueSets).length === 3) {
+			console.log("HELLO");
+			setDataRowsById(defineDataArray(valueSets));
+		}
+
+		function defineDataArray(valueSets) {
+			let dataRowsArray = {
+				id: 1,
+				value_set_id: valueSets.value_set_id,
+				value_set_name: valueSets.value_set_name,
+				corresponding_number: valueSets.medications
+					.replaceAll("|", ",")
+					.split(",").length,
+				medications: valueSets.medications,
+			};
+			console.log("dataRowsArray", dataRowsArray);
+			return dataRowsArray;
+		}
+	}, [valueSets, currentButton, searchInput]);
+
+	// generating datagrid for option "show all"
+
+	useEffect(() => {
+		// const dataRows = [];
+		if (valueSets && currentButton === "all") {
+			console.log("fucking hello?");
+			const dataRowsNew = valueSets?.map((valueSet, index) => {
+				return {
+					id: index,
+					value_set_id: valueSet.value_set_id,
+					value_set_name: valueSet.value_set_name,
+					corresponding_number: valueSet.medications
+						.replaceAll("|", ",")
+						.split(",").length,
+					medications: valueSet.medications,
+				};
+			});
+			setDataRows(dataRowsNew);
+		}
+	}, [valueSets, currentButton]);
+
 	// console.log("dataRows", dataRows);
 
 	const selectedRowData = [];
 	function selectionModelChange(ids) {
-		console.log("ids in selection model change", ids);
+		// console.log("ids in selection model change", ids);
 		for (let i = 0; i < ids.length; i++) {
-			console.log("hey");
 			selectedRowData.push(dataRows[ids[i]]);
 		}
-		console.log("selected rows data", selectedRowData);
+		// console.log("selected rows data", selectedRowData);
 		setSelectedRowDataToDisplay(selectedRowData);
 		return selectedRowData;
 	}
@@ -144,41 +200,79 @@ export default function BetaBlockers() {
 					/>
 				</form>
 			</div>
-			<div style={{ height: "100%", width: "100%" }}>
-				<DataGrid
-					getRowId={(row) => row.id}
-					rows={dataRows}
-					columns={headers}
-					initialState={{
-						pagination: {
-							paginationModel: { page: 0, pageSize: 5 },
-						},
-					}}
-					pageSizeOptions={[5, 10]}
-					checkboxSelection
-					onRowSelectionModelChange={(ids) => {
-						selectionModelChange(ids);
-					}}
-					autoHeight={"true"}
-					sx={{
-						boxShadow: 2,
-						border: 2,
-						backgroundColor: "rgba(255, 255, 255, 0.8)",
-						color: "black",
-						borderColor: "primary.light",
-						"& .MuiDataGrid-cell:hover": {
-							color: "primary.main",
-						},
-						width: "100%",
-						// fontFamily: "Karla",
-					}}
-				/>
-				<h3>Selected data appears below</h3>
-				{selectedRowDataToDisplay != [] &&
-				selectedRowDataToDisplay.length > 0 ? (
+			{/* filter all betablockers data */}
+			{valueSets && currentButton === "all" && dataRows.length > 0 ? (
+				<div style={{ height: "100%", width: "100%" }}>
 					<DataGrid
 						getRowId={(row) => row.id}
-						rows={selectedRowDataToDisplay}
+						rows={dataRows}
+						columns={headers}
+						initialState={{
+							pagination: {
+								paginationModel: { page: 0, pageSize: 5 },
+							},
+						}}
+						pageSizeOptions={[5, 10]}
+						checkboxSelection
+						onRowSelectionModelChange={(ids) => {
+							selectionModelChange(ids);
+						}}
+						sx={{
+							boxShadow: 2,
+							border: 2,
+							backgroundColor: "rgba(255, 255, 255, 0.8)",
+							color: "black",
+							borderColor: "primary.light",
+							"& .MuiDataGrid-cell:hover": {
+								color: "primary.main",
+							},
+							width: "100%",
+							// fontFamily: "Karla",
+						}}
+					/>
+					<h3>Selected data appears below</h3>
+					{selectedRowDataToDisplay != [] &&
+					selectedRowDataToDisplay.length > 0 ? (
+						<DataGrid
+							getRowId={(row) => row.id}
+							rows={selectedRowDataToDisplay}
+							columns={headers}
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 5 },
+								},
+							}}
+							pageSizeOptions={[5, 10]}
+							checkboxSelection
+							sx={{
+								boxShadow: 2,
+								border: 2,
+								backgroundColor: "rgba(255, 255, 255, 0.8)",
+								color: "black",
+								borderColor: "primary.light",
+								"& .MuiDataGrid-cell:hover": {
+									color: "primary.main",
+								},
+								// fontFamily: "Karla",
+							}}
+						/>
+					) : (
+						<></>
+					)}
+				</div>
+			) : (
+				<></>
+			)}
+
+			{/* show value sets by queried value set id */}
+			{valueSets &&
+			Object.keys(valueSets).length === 3 &&
+			currentButton === "value-set-id" &&
+			Object.keys(dataRowsById).length === 5 ? (
+				<div style={{ height: "100%", width: "100%" }}>
+					<DataGrid
+						getRowId={(row) => row.id}
+						rows={dataRowsById}
 						columns={headers}
 						initialState={{
 							pagination: {
@@ -196,16 +290,14 @@ export default function BetaBlockers() {
 							"& .MuiDataGrid-cell:hover": {
 								color: "primary.main",
 							},
+							width: "100%",
 							// fontFamily: "Karla",
 						}}
 					/>
-				) : (
-					<></>
-				)}
-			</div>
-			<div>
-				<h1></h1>
-			</div>
+				</div>
+			) : (
+				<></>
+			)}
 		</section>
 	);
 }

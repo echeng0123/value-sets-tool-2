@@ -97,7 +97,7 @@ export default function Medications() {
 
 	return (
 		<section>
-			<h1>Beta Blockers Value Sets</h1>
+			<h1>Medications</h1>
 			<div>
 				<div>
 					<label htmlFor="all">Show all data</label>
@@ -159,7 +159,6 @@ export default function Medications() {
 					onRowSelectionModelChange={(ids) => {
 						selectionModelChange(ids);
 					}}
-					autoHeight={"true"}
 					sx={{
 						boxShadow: 2,
 						border: 2,
@@ -202,9 +201,6 @@ export default function Medications() {
 				) : (
 					<></>
 				)}
-			</div>
-			<div>
-				<h1></h1>
 			</div>
 		</section>
 	);
