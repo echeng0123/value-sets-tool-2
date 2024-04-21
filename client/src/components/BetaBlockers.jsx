@@ -140,6 +140,13 @@ export default function BetaBlockers() {
 			searchInput != 0
 		) {
 			setDataRowsById(defineDataArrayId(valueSetsQuery));
+		} else if (
+			valueSetsQuery &&
+			Object.keys(valueSetsQuery).length > 0 &&
+			currentButton === "value-set-name" &&
+			searchInput != 0
+		) {
+			setDataRowsByName(valueSetsQuery);
 		}
 
 		function defineDataArrayId(valueSetsQuery) {
@@ -327,25 +334,31 @@ export default function BetaBlockers() {
 							<div>
 								<p>hi</p>
 								{dataRowsByName.map((dataRowByName) => {
-									<div>
-										<h2>
-											Value Set{" "}
-											{dataRowByName.value_set_id}
-										</h2>
-										<h3>{dataRowByName.value_set_name}</h3>
-										<h4>
-											Total number of corresponding
-											medications:{" "}
-											{dataRowByName.corresponding_number}
-										</h4>
-										<h4>Medications</h4>
-										<p>
-											{dataRowByName.medications.replaceAll(
-												"|",
-												" - "
-											)}
-										</p>
-									</div>;
+									return (
+										<div>
+											<h2>
+												Value Set{" "}
+												{dataRowByName.value_set_id}
+											</h2>
+											<h3>
+												{dataRowByName.value_set_name}
+											</h3>
+											<h4>
+												Total number of corresponding
+												medications:{" "}
+												{
+													dataRowByName.corresponding_number
+												}
+											</h4>
+											<h4>Medications</h4>
+											<p>
+												{dataRowByName.medications.replaceAll(
+													"|",
+													" - "
+												)}
+											</p>
+										</div>
+									);
 								})}
 							</div>
 						) : (
