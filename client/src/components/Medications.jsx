@@ -32,6 +32,9 @@ export default function Medications() {
 	] = useState([]);
 	const [medicationDataByRoute, setMedicationDataByRoute] = useState([]);
 	const [medicationToDisplay, setMedicationToDisplay] = useState([]);
+	const [medicationToDisplayRoute, setMedicationToDisplayRoute] = useState(
+		[]
+	);
 
 	function tab1behavior() {
 		setTab(1);
@@ -183,12 +186,12 @@ export default function Medications() {
 
 	// set data to render data set by route query
 	useEffect(() => {
-		// console.log("medicationDataByRoute here", medicationDataByRoute);
+		console.log("medicationDataByRoute here", medicationDataByRoute);
 		if (
 			medicationDataByRoute &&
 			currentButton === "route" &&
 			searchInput != "" &&
-			Object.keys(medicationDataByRoute).length > 0
+			medicationDataByRoute.length > 0
 		) {
 			const dataAll = medicationDataByRoute.map((medication, index) => {
 				return {
@@ -203,7 +206,24 @@ export default function Medications() {
 				};
 			});
 			console.log("dataAll", dataAll);
-			setMedicationToDisplay(dataAll);
+			setMedicationToDisplayRoute(dataAll);
+		} else if (
+			!medicationDataByRoute &&
+			currentButton === "route" &&
+			searchInput === "" &&
+			medicationDataByRoute.length === 0
+		) {
+			const dataAll = {
+				id: 1,
+				medication_id: "",
+				medname: "",
+				simple_generic_name: "",
+				route: "",
+				outpatients: "",
+				inpatients: "",
+				patients: "",
+			};
+			setMedicationToDisplayRoute(dataAll);
 		}
 	}, [medicationDataByRoute, currentButton, searchInput]);
 
@@ -510,14 +530,14 @@ export default function Medications() {
 							</div>
 						)}
 					{/* filter medication by route */}
-					{medicationToDisplay &&
+					{medicationToDisplayRoute &&
 					currentButton === "route" &&
-					medicationToDisplay.length > 0 &&
+					medicationToDisplayRoute.length > 0 &&
 					searchInput.length != 0 ? (
 						<div style={{ height: "100%", width: "100%" }}>
 							<DataGrid
-								getRowId={(row) => row.id}
-								rows={medicationToDisplay}
+								// getRowId={(row) => row.id}
+								rows={medicationToDisplayRoute}
 								columns={headers}
 								initialState={{
 									pagination: {
