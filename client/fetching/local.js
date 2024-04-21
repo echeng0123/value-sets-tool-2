@@ -129,3 +129,5 @@ export const fetchMedicationsByRoute = async (route) => {
 		console.error(error);
 	}
 };
+
+// END ALL MEDICATIONS TABLE ROUTES ======================= //

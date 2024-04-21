@@ -44,8 +44,8 @@ export default function BetaBlockers() {
 			'input[name="radio"]:checked'
 		).value;
 		if (searchInput) {
-			console.log("currentRadioValue in handlesubmit", currentRadioValue);
-			console.log("searchInput in handleSubmit", searchInput);
+			// console.log("currentRadioValue in handlesubmit", currentRadioValue);
+			// console.log("searchInput in handleSubmit", searchInput);
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
 		} else {
