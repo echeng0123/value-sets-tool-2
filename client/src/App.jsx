@@ -6,7 +6,7 @@ import NavBar from "./components/NavBar";
 function App() {
 	return (
 		<section id="app-container">
-			<h1>TITLE HERE?</h1>
+			<h1>Value Sets Tool</h1>
 			<NavBar />
 			<MainSection />
 			<Footer />

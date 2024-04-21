@@ -83,6 +83,7 @@ export default function ValueSetComparisonTool() {
 						id="simple-generic-name"
 						name="radio"
 						value="simple-generic-name"
+						className="radio-button"
 					/>
 					<label htmlFor="medication">Medication ID</label>
 					<input
@@ -90,12 +91,20 @@ export default function ValueSetComparisonTool() {
 						id="medication"
 						name="radio"
 						value="medication"
+						className="radio-button"
 					/>
 					<label htmlFor="route">Route</label>
-					<input type="radio" id="route" name="radio" value="route" />
+
+					<input
+						type="radio"
+						id="route"
+						name="radio"
+						value="route"
+						className="radio-button"
+					/>
 				</div>
 				<form onSubmit={handleSubmit} className="search-form-container">
-					<label htmlFor="Search">
+					<label htmlFor="Search" className="search-label">
 						Select field, then search by pressing enter
 					</label>
 					<br />
@@ -103,6 +112,7 @@ export default function ValueSetComparisonTool() {
 						id="search-form"
 						type="text"
 						name="search"
+						className="search-bar"
 						placeholder="Search field to get value sets"
 						onChange={(event) => setSearchInput(event.target.value)}
 					/>

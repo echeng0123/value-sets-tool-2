@@ -335,6 +335,7 @@ export default function BetaBlockers() {
 							id="search-form"
 							type="text"
 							name="search"
+							className="search-bar"
 							placeholder="Search field to get value sets"
 							onChange={(event) =>
 								setSearchInput(event.target.value)
