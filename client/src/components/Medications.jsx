@@ -26,6 +26,7 @@ export default function Medications() {
 	);
 	const [medicationData, setMedicationData] = useState([]);
 	const [medicationDataById, setMedicationDataById] = useState([]);
+	const [medicationToDisplay, setMedicationToDisplay] = useState([]);
 
 	function tab1behavior() {
 		setTab(1);
@@ -83,15 +84,28 @@ export default function Medications() {
 	// Get data from the medications table queried by medication ID
 	useEffect(() => {
 		async function getMedicationsByMedicationId() {
-			console.log("searchInput in medID", searchInput);
+			// console.log("searchInput in medID", searchInput);
 			const response = await fetchMedicationsByMedicationId(searchInput);
 			setMedicationDataById(response);
-			console.log("medid response", response);
+			// console.log("medid response", response);
 		}
-		if (currentButton === "medication-id") {
+		if (currentButton === "medication-id" && searchInput.length != 0) {
 			getMedicationsByMedicationId();
 		}
 	}, [currentButton, tab, searchInput]);
+
+	// Set data to render from queries
+	useEffect(() => {
+		console.log("medicationDataById", medicationDataById);
+		if (
+			medicationDataById &&
+			Object.keys(medicationDataById).length > 0 &&
+			currentButton === "medication-id" &&
+			searchInput != 0
+		) {
+			setMedicationToDisplay(medicationDataById);
+		}
+	}, [medicationDataById, currentButton, searchInput]);
 
 	// headers for datagrid
 	const headers = [
@@ -283,34 +297,35 @@ export default function Medications() {
 					</form>
 					{/* filter medication by queried medication ID */}
 					{currentButton === "medication-id" &&
-						Object.keys(medicationDataById).length > 0 && (
+						Object.keys(medicationToDisplay).length > 0 &&
+						searchInput.length != 0 && (
 							<div>
 								<h3>
 									Medication #{" "}
-									{medicationDataById.medication_id}
+									{medicationToDisplay.medication_id}
 								</h3>
 								<table>
 									<tr>
 										<th>Medication ID</th>
 										<th>
-											{medicationDataById.medication_id}
+											{medicationToDisplay.medication_id}
 										</th>
 									</tr>
 									<tr>
 										<th>Medname</th>
-										<th>{medicationDataById.medname}</th>
+										<th>{medicationToDisplay.medname}</th>
 									</tr>
 									<tr>
 										<th>Simple Generic Name</th>
 										<th>
 											{
-												medicationDataById.simple_generic_name
+												medicationToDisplay.simple_generic_name
 											}
 										</th>
 									</tr>
 									<tr>
 										<th>Route</th>
-										<th>{medicationDataById.route}</th>
+										<th>{medicationToDisplay.route}</th>
 									</tr>
 								</table>
 								<br />
@@ -319,16 +334,18 @@ export default function Medications() {
 									<tr>
 										<th>Outpatients</th>
 										<th>
-											{medicationDataById.outpatients}
+											{medicationToDisplay.outpatients}
 										</th>
 									</tr>
 									<tr>
 										<th>Inpatients</th>
-										<th>{medicationDataById.inpatients}</th>
+										<th>
+											{medicationToDisplay.inpatients}
+										</th>
 									</tr>
 									<tr>
 										<th>Patients</th>
-										<th>{medicationDataById.patients}</th>
+										<th>{medicationToDisplay.patients}</th>
 									</tr>
 								</table>
 							</div>
