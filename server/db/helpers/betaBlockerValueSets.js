@@ -34,16 +34,12 @@ const getBetaBlockerValueSetsByValueSetId = async (value_set_id) => {
 const getBetaBlockerValueSetsByValueSetName = async (value_set_name) => {
 	try {
 		console.log("enter BBVS by value set name: ", value_set_name);
-		const newInput = value_set_name.replaceAll("_", " ");
-		console.log("newInput is ", newInput, newInput.length, typeof newInput);
-		const {
-			rows: [bbvs],
-		} = await client.query(`
+		const { rows } = await client.query(`
         SELECT * FROM beta_blocker_value_sets
-        WHERE value_set_name = '${newInput}' 
+        WHERE LOWER(value_set_name) LIKE '%${value_set_name}%' 
         `);
-		console.log("value sets in getBBVS by VS name", bbvs);
-		return bbvs;
+		console.log("value sets in getBBVS by VS name", rows);
+		return rows;
 	} catch (error) {
 		throw error;
 	}

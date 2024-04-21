@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import {
 	fetchAllBetaBlockerValueSets,
 	fetchBetaBlockerValueSetsByValueSetId,
+	fetchBetaBlockerValueSetsByValueSetName,
 } from "../../fetching/local";
 import {
 	Table,
@@ -38,7 +39,6 @@ export default function BetaBlockers() {
 		let currentRadioValue = document.querySelector(
 			'input[name="radio"]:checked'
 		).value;
-		// console.log("currentRadioValue: ", currentRadioValue);
 		if (searchInput) {
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
@@ -61,7 +61,6 @@ export default function BetaBlockers() {
 	// set data to render all value sets once obtained from API
 	useEffect(() => {
 		if (tab === 1 && currentButton === "all" && searchInput === "") {
-			console.log("currentValueSets in UEEEEE", valueSets);
 			const dataAll = valueSets.map((valueSet, index) => {
 				return {
 					id: index,
@@ -80,15 +79,26 @@ export default function BetaBlockers() {
 	// Get value sets by value set ID
 	useEffect(() => {
 		async function getBetaBlockerValueSetsByValueSetId() {
-			// console.log("current search input", searchInput);
 			const response = await fetchBetaBlockerValueSetsByValueSetId(
 				searchInput
 			);
-			// console.log("response", response);
 			setValueSetsQuery(response);
 		}
 		if (currentButton === "value-set-id") {
 			getBetaBlockerValueSetsByValueSetId();
+		}
+	}, [currentButton, searchInput]);
+
+	// Get value sets by value set name
+	useEffect(() => {
+		async function getBetaBlockerValueSetsByValueSetName() {
+			const response = await fetchBetaBlockerValueSetsByValueSetName(
+				searchInput
+			);
+			setValueSetsQuery(response);
+		}
+		if (currentButton === "value-set-name") {
+			getBetaBlockerValueSetsByValueSetName();
 		}
 	}, [currentButton, searchInput]);
 
@@ -117,17 +127,11 @@ export default function BetaBlockers() {
 		},
 	];
 
+	// allows for rendering of value sets searched by a query
 	useEffect(() => {
-		// console.log("current value sets", valueSets);
-		console.log("searchInput in UE", searchInput);
-		console.log("CVS length", Object.keys(valueSetsQuery).length);
-
-		// console.log("medications", valueSets.medications);
-
 		if (Object.keys(valueSetsQuery).length === 3) {
 			setDataRowsById(defineDataArray(valueSetsQuery));
 		}
-
 		function defineDataArray(valueSetsQuery) {
 			let dataRowsArray = {
 				id: 1,
@@ -143,15 +147,12 @@ export default function BetaBlockers() {
 		}
 	}, [valueSetsQuery, currentButton, searchInput]);
 
-	// console.log("dataRows", dataRows);
-
+	// allows for rendering of selected rows
 	const selectedRowData = [];
 	function selectionModelChange(ids) {
-		// console.log("ids in selection model change", ids);
 		for (let i = 0; i < ids.length; i++) {
 			selectedRowData.push(dataRows[ids[i]]);
 		}
-		// console.log("selected rows data", selectedRowData);
 		setSelectedRowDataToDisplay(selectedRowData);
 		return selectedRowData;
 	}
@@ -316,60 +317,3 @@ export default function BetaBlockers() {
 		</section>
 	);
 }
-
-// code for keeping queried value set id data in same DataGrid format; keep for future
-// {valueSets &&
-//     Object.keys(valueSets).length === 3 &&
-//     currentButton === "value-set-id" &&
-//     Object.keys(dataRowsById).length === 5 ? (
-//         <div style={{ height: "100%", width: "100%" }}>
-//             <DataGrid
-//                 getRowId={(row) => row.id}
-//                 rows={dataRowsById}
-//                 columns={headers}
-//                 initialState={{
-//                     pagination: {
-//                         paginationModel: { page: 0, pageSize: 5 },
-//                     },
-//                 }}
-//                 pageSizeOptions={[5, 10]}
-//                 checkboxSelection
-//                 sx={{
-//                     boxShadow: 2,
-//                     border: 2,
-//                     backgroundColor: "rgba(255, 255, 255, 0.8)",
-//                     color: "black",
-//                     borderColor: "primary.light",
-//                     "& .MuiDataGrid-cell:hover": {
-//                         color: "primary.main",
-//                     },
-//                     width: "100%",
-//                     // fontFamily: "Karla",
-//                 }}
-//             />
-//         </div>
-//     ) : (
-//         <></>
-//     )}
-
-// generating datagrid for option "show all"
-// useEffect(() => {
-// 	console.log("valueSets on tab1", valueSets);
-// 	console.log("currentTab", tab);
-// 	console.log("currentButton", currentButton);
-// 	console.log("searchInput", searchInput);
-// 	// if (valueSets && currentButton === "all" && searchInput.length == 0) {
-// 	// 	const dataRowsNew = valueSets.map((valueSet, index) => {
-// 	// 		return {
-// 	// 			id: index,
-// 	// 			value_set_id: valueSet.value_set_id,
-// 	// 			value_set_name: valueSet.value_set_name,
-// 	// 			corresponding_number: valueSet.medications
-// 	// 				.replaceAll("|", ",")
-// 	// 				.split(",").length,
-// 	// 			medications: valueSet.medications,
-// 	// 		};
-// 	// 	});
-// 	// 	setDataRows(dataRowsNew);
-// 	// }
-// }, [valueSets, currentButton, searchInput, tab]);
