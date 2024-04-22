@@ -6,9 +6,12 @@ import NavBar from "./components/NavBar";
 function App() {
 	return (
 		<section id="app-container">
-			<a href="/">
-				<h1 id="site-header">Value Sets Tool</h1>
-			</a>
+			<h1 id="site-header">
+				<a href="/" className="animate-character">
+					Value Sets Tool
+				</a>
+			</h1>
+
 			<NavBar />
 			<MainSection />
 			<Footer />

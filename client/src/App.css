@@ -11,19 +11,19 @@
 
 /* CONTAINERS */
 #app-container{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin: 1rem;
     padding: 1rem;
 }
 
 #main-section-container{
-    border: 3px dotted goldenrod;
+    /* border: 3px dotted goldenrod; */
     margin: 2rem;
     padding: 2rem;
 }
 
 #navbar-container{
-    border: 1px solid rgb(15, 238, 15);
+    /* border: 1px solid rgb(15, 238, 15); */
     margin: 2rem;
     padding: 1rem;
 
@@ -34,7 +34,7 @@
 }
 
 #footer-container{
-    border: 1px dashed rgb(226, 179, 187);
+    /* border: 1px dashed rgb(226, 179, 187); */
     margin: 1rem;
     padding: 1rem;
     display: flex;
@@ -210,7 +210,7 @@
 /* NAVBAR--------------------------- */
 .navbar-link{
     padding: 0 1rem;
-    border: 1px solid yellow;
+    border: 1px solid rgb(223, 255, 242);
     background-color: #078C7F;
     font-size: 2rem;
     margin: 0 1rem;
@@ -227,9 +227,24 @@
 }
 
 #site-header{
-    font-size: 5rem;
     font-family: "Unbounded", "sans-serif";
+    margin: 1rem;
+    padding: 1rem;
+
+    text-decoration: none;
+    color: white;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    
+    & a {
+        font-size: 5rem;
+    }
+
+    & a:hover{
+        color: goldenrod;
+    }
+
 }
+
 
 /* SNACKBAR STYLING START ---------------------------- */
 #snackbar{
