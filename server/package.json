@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "seed": "node ./db/seed.js && cat </Users/emilycheng/Desktop/CODING/Vanderbilt_Application/medications.csv | psql -h localhost://5432 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' && cat <//Users/emilycheng/Desktop/CODING/Vanderbilt_Application/beta_blocker_value_sets.csv | psql -h localhost://5432 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';'",
+      "seed": "node ./db/seed.js && psql -h 5432 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' < /Users/emilycheng/Desktop/CODING/Vanderbilt_Application/medications.csv && psql -h 5432 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' < /Users/emilycheng/Desktop/CODING/Vanderbilt_Application/beta_blocker_value_sets.csv",
       "start": "nodemon index.js"
     },
     "author": "",
