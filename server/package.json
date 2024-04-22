@@ -6,7 +6,7 @@
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "seed": "node ./db/seed.js",
-      "build": "COPY medications FROM '/medications.csv', delimiter ',' CSV HEADER'; ",
+      "build": "psql COPY medications FROM '/medications.csv', delimiter ',' CSV HEADER; ",
       "start": "nodemon index.js"
     },
     "author": "",
