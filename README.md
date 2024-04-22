@@ -12,6 +12,8 @@
   <li>In VSCode, open 2 terminals - one named "server" and one named "client"</li>
   <li>In both terminals, run <b>npm i</b>
   <li>In the server terminal, run the following: <b>psql CREATE DATABASE valuesets2</b>. While still in psql, then run <b>\c valuesets2</b>. Your terminal should say "You are now connected to database "valuesets2" as user "[username]".</li>
+  <li>Open another terminal, this time named "database". In this terminal, run the following: <b>psql \copy beta_blocker_value_sets from '/YOURFILEPATHHERE/beta_blocker_value_sets.csv' delimiter ',' CSV HEADER;</b></li>
+  <li>In the same terminal, run <b>\copy medications from '/YOURFILEPATHHERE/medications.csv' delimiter ',' CSV HEADER;</b></li>
   <li>In the server terminal, change directory (cd) into the server folder. Run the following: <b>npm run seed</b>, then run <b>npm run start</b></li>
   <li>In the client terminal, change directory (cd) into the client folder. Run the following: <b>npm run dev</b> and follow the URL to the localhost.</li>
 </ul>
