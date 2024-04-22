@@ -240,7 +240,7 @@ export default function Medications() {
 
 	return (
 		<section>
-			<h1>Medications</h1>
+			<h1 className="page-header">Medications</h1>
 			<div className="tab-container">
 				<button
 					id="tab-1"
@@ -290,46 +290,55 @@ export default function Medications() {
 							selectionModelChange(ids);
 						}}
 						sx={{
-							boxShadow: 2,
-							border: 2,
+							boxShadow: "2px 2px 5px 3px rgba(0,0,0,0.5)",
+							border: "2px solid white",
 							backgroundColor: "rgba(255, 255, 255, 0.8)",
 							color: "black",
 							borderColor: "primary.light",
 							"& .MuiDataGrid-cell:hover": {
 								color: "primary.main",
 							},
+							borderRadius: "10px",
 							width: "100%",
-							// fontFamily: "Karla",
+							fontFamily: "Karla",
 						}}
 						slots={{ toolbar: GridToolbar }}
 					/>
-					<h3>Selected data appears below</h3>
 					{selectedRowDataToDisplay != [] &&
 					selectedRowDataToDisplay.length > 0 ? (
-						<DataGrid
-							getRowId={(row) => row.id}
-							rows={selectedRowDataToDisplay}
-							columns={headers}
-							initialState={{
-								pagination: {
-									paginationModel: { page: 0, pageSize: 5 },
-								},
-							}}
-							pageSizeOptions={[5, 10]}
-							checkboxSelection
-							sx={{
-								boxShadow: 2,
-								border: 2,
-								backgroundColor: "rgba(255, 255, 255, 0.8)",
-								color: "black",
-								borderColor: "primary.light",
-								"& .MuiDataGrid-cell:hover": {
-									color: "primary.main",
-								},
-								// fontFamily: "Karla",
-							}}
-							slots={{ toolbar: GridToolbar }}
-						/>
+						<div>
+							<h3>Selected data appears below</h3>
+							<DataGrid
+								getRowId={(row) => row.id}
+								rows={selectedRowDataToDisplay}
+								columns={headers}
+								initialState={{
+									pagination: {
+										paginationModel: {
+											page: 0,
+											pageSize: 5,
+										},
+									},
+								}}
+								pageSizeOptions={[5, 10]}
+								checkboxSelection
+								sx={{
+									boxShadow:
+										"2px 2px 5px 3px rgba(0,0,0,0.5)",
+									border: "2px solid white",
+									backgroundColor: "rgba(255, 255, 255, 0.8)",
+									color: "black",
+									borderColor: "primary.light",
+									"& .MuiDataGrid-cell:hover": {
+										color: "primary.main",
+									},
+									borderRadius: "10px",
+									width: "100%",
+									fontFamily: "Karla",
+								}}
+								slots={{ toolbar: GridToolbar }}
+							/>
+						</div>
 					) : (
 						<></>
 					)}
@@ -565,6 +574,7 @@ export default function Medications() {
 								</div>
 							</div>
 						)}
+					<br />
 					{/* filter medication by route */}
 					{medicationToDisplayRoute &&
 					currentButton === "route" &&
@@ -589,50 +599,59 @@ export default function Medications() {
 									selectionModelChange(ids);
 								}}
 								sx={{
-									boxShadow: 2,
-									border: 2,
+									boxShadow:
+										"2px 2px 5px 3px rgba(0,0,0,0.5)",
+									border: "2px solid white",
 									backgroundColor: "rgba(255, 255, 255, 0.8)",
 									color: "black",
 									borderColor: "primary.light",
 									"& .MuiDataGrid-cell:hover": {
 										color: "primary.main",
 									},
+									borderRadius: "10px",
 									width: "100%",
-									// fontFamily: "Karla",
+									fontFamily: "Karla",
 								}}
 								slots={{ toolbar: GridToolbar }}
 							/>
-							<h3>Selected data appears below</h3>
 							{selectedRowDataToDisplay != [] &&
 							selectedRowDataToDisplay.length > 0 ? (
-								<DataGrid
-									getRowId={(row) => row.id}
-									rows={selectedRowDataToDisplay}
-									columns={headers}
-									initialState={{
-										pagination: {
-											paginationModel: {
-												page: 0,
-												pageSize: 5,
+								<div>
+									<h3 className="single-card-title">
+										Selected data appears below
+									</h3>
+									<DataGrid
+										getRowId={(row) => row.id}
+										rows={selectedRowDataToDisplay}
+										columns={headers}
+										initialState={{
+											pagination: {
+												paginationModel: {
+													page: 0,
+													pageSize: 5,
+												},
 											},
-										},
-									}}
-									pageSizeOptions={[5, 10]}
-									checkboxSelection
-									sx={{
-										boxShadow: 2,
-										border: 2,
-										backgroundColor:
-											"rgba(255, 255, 255, 0.8)",
-										color: "black",
-										borderColor: "primary.light",
-										"& .MuiDataGrid-cell:hover": {
-											color: "primary.main",
-										},
-										// fontFamily: "Karla",
-									}}
-									slots={{ toolbar: GridToolbar }}
-								/>
+										}}
+										pageSizeOptions={[5, 10]}
+										checkboxSelection
+										sx={{
+											boxShadow:
+												"2px 2px 5px 3px rgba(0,0,0,0.5)",
+											border: "2px solid white",
+											backgroundColor:
+												"rgba(255, 255, 255, 0.8)",
+											color: "black",
+											borderColor: "primary.light",
+											"& .MuiDataGrid-cell:hover": {
+												color: "primary.main",
+											},
+											borderRadius: "10px",
+											width: "100%",
+											fontFamily: "Karla",
+										}}
+										slots={{ toolbar: GridToolbar }}
+									/>
+								</div>
 							) : (
 								<></>
 							)}

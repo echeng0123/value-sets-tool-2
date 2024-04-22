@@ -159,7 +159,8 @@ export default function BetaBlockers() {
 			currentButton === "value-set-name" &&
 			searchInput != 0
 		) {
-			setDataRowsByName(valueSetsQuery);
+			console.log("valueSetsQuery in SDRBN", valueSetsQuery);
+			setDataRowsByName(defineDataArrayName(valueSetsQuery));
 		} else if (
 			valueSetsQuery &&
 			Object.keys(valueSetsQuery).length > 0 &&
@@ -170,14 +171,29 @@ export default function BetaBlockers() {
 			setDataRowsByMedication(valueSetsQuery);
 		}
 
+		function defineDataArrayName(valueSetsQuery) {
+			let dataRowsArray = valueSetsQuery.map((valueSet) => {
+				return {
+					id: 1,
+					value_set_id: valueSet.value_set_id,
+					value_set_name: valueSet.value_set_name,
+					corresponding_number: valueSet.medications
+						.replaceAll("|", ",")
+						.split(",").length,
+					medications: valueSet.medications,
+				};
+			});
+			return dataRowsArray;
+		}
+
 		function defineDataArrayId(valueSetsQuery) {
-			console.log("valueSetsQuery", valueSetsQuery);
+			// console.log("valueSetsQuery", valueSetsQuery);
 			let dataRowsArray = {
 				id: 1,
 				value_set_id: valueSetsQuery.value_set_id,
 				value_set_name: valueSetsQuery.value_set_name,
 				corresponding_number: valueSetsQuery.medications
-					.replaceAll(" - ", ",")
+					.replaceAll("|", ",")
 					.split(",").length,
 				medications: valueSetsQuery.medications,
 			};
@@ -249,23 +265,26 @@ export default function BetaBlockers() {
 							selectionModelChange(ids);
 						}}
 						sx={{
-							boxShadow: 2,
-							border: 2,
+							boxShadow: "2px 2px 5px 3px rgba(0,0,0,0.5)",
+							border: "2px solid white",
 							backgroundColor: "rgba(255, 255, 255, 0.8)",
 							color: "black",
 							borderColor: "primary.light",
 							"& .MuiDataGrid-cell:hover": {
 								color: "primary.main",
 							},
+							borderRadius: "10px",
 							width: "100%",
-							// fontFamily: "Karla",
+							fontFamily: "Karla",
 						}}
 						slots={{ toolbar: GridToolbar }}
 					/>
 					{selectedRowDataToDisplay != [] &&
 					selectedRowDataToDisplay.length > 0 ? (
 						<div>
-							<h3>Selected data appears below</h3>
+							<h3 className="single-card-title">
+								Selected data appears below
+							</h3>
 							<DataGrid
 								getRowId={(row) => row.id}
 								rows={selectedRowDataToDisplay}
@@ -281,15 +300,18 @@ export default function BetaBlockers() {
 								pageSizeOptions={[5, 10]}
 								checkboxSelection
 								sx={{
-									boxShadow: 2,
-									border: 2,
+									boxShadow:
+										"2px 2px 5px 3px rgba(0,0,0,0.5)",
+									border: "2px solid white",
 									backgroundColor: "rgba(255, 255, 255, 0.8)",
 									color: "black",
 									borderColor: "primary.light",
 									"& .MuiDataGrid-cell:hover": {
 										color: "primary.main",
 									},
-									// fontFamily: "Karla",
+									borderRadius: "10px",
+									width: "100%",
+									fontFamily: "Karla",
 								}}
 								slots={{ toolbar: GridToolbar }}
 							/>
