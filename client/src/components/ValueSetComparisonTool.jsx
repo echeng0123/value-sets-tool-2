@@ -13,13 +13,28 @@ export default function ValueSetComparisonTool() {
 	const [valueSets, setValueSets] = useState([]);
 	const [currentButton, setCurrentButton] = useState("");
 
+	// snackbar (alert) for if no radio button is selected
+	function radioSnackbar() {
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 3000);
+	}
+
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+
+		if (!document.querySelector('input[name="radio"]:checked')) {
+			radioSnackbar();
+		}
+
 		let currentRadioValue = document.querySelector(
 			'input[name="radio"]:checked'
 		).value;
-		console.log("currentRadioValue: ", currentRadioValue);
+
+		// console.log("currentRadioValue: ", currentRadioValue);
 		if (searchInput) {
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
@@ -35,7 +50,7 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			console.log("response from FBBVSBMI: ", response);
+			// console.log("response from FBBVSBMI: ", response);
 		}
 		if (currentButton === "medication") {
 			getValueSetsByMedicationID();
@@ -49,7 +64,7 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			console.log("response from FBBVSBSGN: ", response);
+			// console.log("response from FBBVSBSGN: ", response);
 		}
 		if (currentButton === "simple-generic-name") {
 			getValueSetsBySimpleGenericName();
@@ -63,7 +78,7 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			console.log("response from FBBVSBR: ", response);
+			// console.log("response from FBBVSBR: ", response);
 		}
 		if (currentButton === "route") {
 			getValueSetsByRoute();
@@ -74,6 +89,9 @@ export default function ValueSetComparisonTool() {
 		<section>
 			<h1 className="page-header">Value Set Comparison Tool</h1>
 			<div>
+				<div id="snackbar">
+					<h3>Please select a field button</h3>
+				</div>
 				<div className="radio-buttons-container">
 					<label htmlFor="simple-generic-name">
 						Simple Generic Name

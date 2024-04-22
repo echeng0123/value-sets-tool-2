@@ -6,7 +6,9 @@ import NavBar from "./components/NavBar";
 function App() {
 	return (
 		<section id="app-container">
-			<h1>Value Sets Tool</h1>
+			<a href="/">
+				<h1 id="site-header">Value Sets Tool</h1>
+			</a>
 			<NavBar />
 			<MainSection />
 			<Footer />

@@ -35,15 +35,27 @@ export default function Medications() {
 		setCurrentButton("all");
 	}
 
+	// snackbar (alert) for if no radio button is selected
+	function radioSnackbar() {
+		var x = document.getElementById("snackbar");
+		x.className = "show";
+		setTimeout(function () {
+			x.className = x.className.replace("show", "");
+		}, 3000);
+	}
+
 	// sets state for results showing up when search is entered
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		if (!document.querySelector('input[name="radio"]:checked')) {
+			radioSnackbar();
+		}
+
 		let currentRadioValue = document.querySelector(
 			'input[name="radio"]:checked'
 		).value;
+
 		if (searchInput) {
-			// console.log("currentRadioValue in handlesubmit", currentRadioValue);
-			// console.log("searchInput in handleSubmit", searchInput);
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
 		} else {
@@ -240,6 +252,9 @@ export default function Medications() {
 
 	return (
 		<section>
+			<div id="snackbar">
+				<h3>Please select a field button</h3>
+			</div>
 			<h1 className="page-header">Medications</h1>
 			<div className="tab-container">
 				<button
