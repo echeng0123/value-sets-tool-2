@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "seed": "node ./db/seed.js && psql -h postgres://valuesets2_user:krkRCJQaNRob45zh94TvxWy31rarKqJJ@dpg-coiv125jm4es739v4ce0-a/valuesets2 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' './medications.csv' && psql -h postgres://valuesets2_user:krkRCJQaNRob45zh94TvxWy31rarKqJJ@dpg-coiv125jm4es739v4ce0-a/valuesets2 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' './beta_blocker_value_sets.csv'",
+      "seed": "node ./db/seed.js && psql -h krkRCJQaNRob45zh94TvxWy31rarKqJJ@dpg-coiv125jm4es739v4ce0-a/valuesets2 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' <./medications.csv && psql -h krkRCJQaNRob45zh94TvxWy31rarKqJJ@dpg-coiv125jm4es739v4ce0-a/valuesets2 -d valuesets2 -U emilycheng -c  'copy states from STDIN with delimiter as ',';' <./beta_blocker_value_sets.csv",
       "start": "nodemon index.js"
     },
     "author": "",
