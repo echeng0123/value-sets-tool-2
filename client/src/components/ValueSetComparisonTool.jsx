@@ -72,7 +72,7 @@ export default function ValueSetComparisonTool() {
 
 	return (
 		<section>
-			<h1>Value Set Comparison Tool</h1>
+			<h1 className="page-header">Value Set Comparison Tool</h1>
 			<div>
 				<div className="radio-buttons-container">
 					<label htmlFor="simple-generic-name">

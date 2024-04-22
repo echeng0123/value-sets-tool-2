@@ -198,7 +198,7 @@ export default function BetaBlockers() {
 
 	return (
 		<section>
-			<h1 className="page-title">Beta Blockers Value Sets</h1>
+			<h1 className="page-header">Beta Blockers Value Sets</h1>
 			<div className="tab-container">
 				<button
 					id="tab-1"
@@ -262,33 +262,38 @@ export default function BetaBlockers() {
 						}}
 						slots={{ toolbar: GridToolbar }}
 					/>
-					<h3>Selected data appears below</h3>
 					{selectedRowDataToDisplay != [] &&
 					selectedRowDataToDisplay.length > 0 ? (
-						<DataGrid
-							getRowId={(row) => row.id}
-							rows={selectedRowDataToDisplay}
-							columns={headers}
-							initialState={{
-								pagination: {
-									paginationModel: { page: 0, pageSize: 5 },
-								},
-							}}
-							pageSizeOptions={[5, 10]}
-							checkboxSelection
-							sx={{
-								boxShadow: 2,
-								border: 2,
-								backgroundColor: "rgba(255, 255, 255, 0.8)",
-								color: "black",
-								borderColor: "primary.light",
-								"& .MuiDataGrid-cell:hover": {
-									color: "primary.main",
-								},
-								// fontFamily: "Karla",
-							}}
-							slots={{ toolbar: GridToolbar }}
-						/>
+						<div>
+							<h3>Selected data appears below</h3>
+							<DataGrid
+								getRowId={(row) => row.id}
+								rows={selectedRowDataToDisplay}
+								columns={headers}
+								initialState={{
+									pagination: {
+										paginationModel: {
+											page: 0,
+											pageSize: 5,
+										},
+									},
+								}}
+								pageSizeOptions={[5, 10]}
+								checkboxSelection
+								sx={{
+									boxShadow: 2,
+									border: 2,
+									backgroundColor: "rgba(255, 255, 255, 0.8)",
+									color: "black",
+									borderColor: "primary.light",
+									"& .MuiDataGrid-cell:hover": {
+										color: "primary.main",
+									},
+									// fontFamily: "Karla",
+								}}
+								slots={{ toolbar: GridToolbar }}
+							/>
+						</div>
 					) : (
 						<></>
 					)}
@@ -330,7 +335,7 @@ export default function BetaBlockers() {
 						onSubmit={handleSubmit}
 						className="search-form-container"
 					>
-						<label htmlFor="Search">
+						<label htmlFor="Search" className="search-label">
 							Select field, then search by pressing enter
 						</label>
 						<br />
@@ -346,12 +351,14 @@ export default function BetaBlockers() {
 						/>
 					</form>
 					{/* show value sets by queried value set id */}
-					<div className="single-card-container">
+					<div>
 						{currentButton === "value-set-id" &&
 						Object.keys(dataRowsById).length > 0 &&
 						searchInput.length != 0 ? (
-							<div>
-								<h2>Value Set {dataRowsById.value_set_id}</h2>
+							<div className="single-card-container">
+								<h2 className="single-card-title">
+									Value Set {dataRowsById.value_set_id}
+								</h2>
 								<h3>Name: {dataRowsById.value_set_name}</h3>
 								<h3>
 									Total number of corresponding medications:{" "}
@@ -375,11 +382,11 @@ export default function BetaBlockers() {
 					<div>
 						{currentButton === "value-set-name" &&
 						searchInput.length != 0 ? (
-							<div>
+							<div className="multiple-card-grid">
 								{dataRowsByName.map((dataRowByName) => {
 									return (
-										<div>
-											<h2>
+										<div className="single-card-container">
+											<h2 className="single-card-title">
 												Value Set{" "}
 												{dataRowByName.value_set_id}
 											</h2>
@@ -412,12 +419,15 @@ export default function BetaBlockers() {
 					<div>
 						{currentButton === "medication" &&
 						searchInput.length != 0 ? (
-							<div>
+							<div className="single-card-container">
+								<h2 className="single-card-title">
+									Corresponding Value Sets
+								</h2>
 								{dataRowsByMedication.map(
 									(dataRowByMedication) => {
 										return (
 											<div>
-												<h3>{dataRowByMedication}</h3>
+												<h2>{dataRowByMedication}</h2>
 											</div>
 										);
 									}

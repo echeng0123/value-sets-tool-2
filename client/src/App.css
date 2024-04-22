@@ -26,6 +26,11 @@
     border: 1px solid rgb(15, 238, 15);
     margin: 2rem;
     padding: 1rem;
+
+    & .navbar-link.active{
+        color: rgb(245, 189, 69);
+        background-color: rgb(2, 61, 57);
+    }
 }
 
 #footer-container{
@@ -38,19 +43,21 @@
 }
 
 .search-form-container{
-    border: 1px solid rgb(255, 0, 149);
+    /* border: 1px solid rgb(255, 0, 149); */
     background-color: #9cd9c8de;
     border-radius: 10px;
     padding: 0.5rem;
+    box-shadow: 2px 2px 10px 5px rgba(0,0,0,0.5);
 }
 
 .radio-buttons-container{
-    border: 1px dashed rgb(255, 0, 149);
+    /* border: 1px dashed rgb(255, 0, 149); */
     font-size: 1.6rem;
     margin: 1rem 0;
     padding: 0.5rem;
     background-color: #9cd9c8de;
     border-radius: 10px;
+    box-shadow: 2px 2px 10px 5px rgba(0,0,0,0.5);
 }
 
 #results-container{
@@ -62,12 +69,18 @@
 }
 
 .tab-container{
-    border: 2px solid white;
+    /* border: 2px solid white; */
+    margin-top: -1rem;
+    padding: -3rem 0 1rem 0;
 }
 
 .single-card-container {
-    border: 2px dashed cyan;
-    padding: 1rem;
+    /* border: 2px dashed cyan; */
+    margin: 1rem 10rem;
+    background-color: #9cd9c8de;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px 5px rgba(0,0,0,0.5);
+    padding: 1rem 3rem;
 }
 
 .medications-list{
@@ -84,9 +97,11 @@
     padding: 0 2rem;
     text-align: center;
     font-size: 1.5rem;
+    font-weight: 700;
     border-radius: 10px;
     background-color: #078C7F;
     color: white;
+    border: 2px solid black;
 }
 
 .search-label{
@@ -94,7 +109,21 @@
 }
 
 .button-tab{
-    border: 3px dotted red;
+    border: 1px solid black;
+    font-size: 1.3rem;
+    margin: 0 1rem;
+    padding: 0.3rem 1rem;
+    border-radius: 10px;
+    background-color: #046b61;
+    font-weight: 700;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+.button-tab:hover{
+    background-color: #023934;
+    cursor: pointer;
+    color: rgb(64, 247, 192);
+    box-shadow: 2px 2px 5px 3px rgba(0, 0, 0, 0.5);
 }
 
 .radio-button{
@@ -111,7 +140,6 @@
 .radio-button:checked{
     /* border: 5px solid rgb(27, 27, 27); */
     border: 5px solid #00524a;
-
 }
 
 .radio-button:hover{
@@ -119,16 +147,51 @@
     cursor: pointer;
 }
 
-.page-title{
+.footer-item{
+    margin: 0 1rem;
+}
+
+.top-button{
+    scale: 1.2;
+    margin: 0 1rem;
+    padding: 0.5rem;
+    background-color: #078C7F;
+    border-radius: 3px;
+    border: 1px solid #02524a;
+}
+
+.page-header{
+    color: white;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
     margin-top: 0.5rem;
 }
 
-.footer-item{
-    margin: 0 1rem;
+.single-card-title{
+    background-color: rgb(255, 200, 0);
+    margin: 0.5rem 20%;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+.multiple-card-grid{
+    display: flex;
 }
 
 /* NAVBAR--------------------------- */
 .navbar-link{
     padding: 0 1rem;
     border: 1px solid yellow;
+    background-color: #078C7F;
+    font-size: 2rem;
+    margin: 0 1rem;
+    border-radius: 10px;
+    text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+.navbar-link:hover{
+    box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.6);
+    transition: 0.1s all ease-in-out;
+    background-color: #21BF92;
+    color: #1d1d1d;
+    text-shadow: none;
 }

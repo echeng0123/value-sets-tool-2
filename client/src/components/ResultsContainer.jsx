@@ -5,7 +5,7 @@ export default function ResultsContainer({ currentButton, valueSets }) {
 	return (
 		<section>
 			<div id="results-container">
-				<h2>
+				<h2 style={{ color: "#02524a" }}>
 					<u>Value Sets corresponding to search query</u>
 				</h2>
 				{currentButton && valueSets.length > 0 ? (
