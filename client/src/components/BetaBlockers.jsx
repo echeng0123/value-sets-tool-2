@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
 	fetchAllBetaBlockerValueSets,
 	fetchBetaBlockerValueSetsByValueSetId,
@@ -154,8 +154,6 @@ export default function BetaBlockers() {
 
 	// allows for rendering of value sets searched by a query
 	useEffect(() => {
-		// console.log("currentButton in UE", currentButton);
-		// console.log("valueSetsQuery", valueSetsQuery);
 		if (
 			valueSetsQuery &&
 			Object.keys(valueSetsQuery).length > 0 &&
@@ -199,7 +197,6 @@ export default function BetaBlockers() {
 		}
 
 		function defineDataArrayId(valueSetsQuery) {
-			// console.log("valueSetsQuery", valueSetsQuery);
 			let dataRowsArray = {
 				id: 1,
 				value_set_id: valueSetsQuery.value_set_id,
@@ -209,7 +206,6 @@ export default function BetaBlockers() {
 					.split(",").length,
 				medications: valueSetsQuery.medications,
 			};
-			// console.log("dataRowsArray", dataRowsArray);
 			return dataRowsArray;
 		}
 	}, [valueSetsQuery, currentButton, searchInput]);
@@ -266,7 +262,6 @@ export default function BetaBlockers() {
 						/>
 					</div>
 					<DataGrid
-						// getRowId={(row) => row.id}
 						rows={dataRows}
 						columns={headers}
 						initialState={{

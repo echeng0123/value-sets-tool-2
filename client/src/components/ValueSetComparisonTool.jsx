@@ -34,7 +34,6 @@ export default function ValueSetComparisonTool() {
 			'input[name="radio"]:checked'
 		).value;
 
-		// console.log("currentRadioValue: ", currentRadioValue);
 		if (searchInput) {
 			setResults(!results);
 			setCurrentButton(currentRadioValue);
@@ -50,7 +49,6 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			// console.log("response from FBBVSBMI: ", response);
 		}
 		if (currentButton === "medication") {
 			getValueSetsByMedicationID();
@@ -64,7 +62,6 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			// console.log("response from FBBVSBSGN: ", response);
 		}
 		if (currentButton === "simple-generic-name") {
 			getValueSetsBySimpleGenericName();
@@ -78,7 +75,6 @@ export default function ValueSetComparisonTool() {
 				searchInput
 			);
 			setValueSets(response);
-			// console.log("response from FBBVSBR: ", response);
 		}
 		if (currentButton === "route") {
 			getValueSetsByRoute();

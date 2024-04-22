@@ -1,8 +1,5 @@
-# React + Vite
+<h1>Value Set Tool</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h3>This took allows users to find, view, compare, and select appropriate value sets for further use by combining data across 2 databases.</h3>
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<h4>Tech Stack: React | Javascript | HTML/CSS | Node.js | Express | PostgreSQL | Material UI | Vite | Render</h4>
