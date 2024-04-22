@@ -6,7 +6,7 @@
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "seed": "node ./db/seed.js",
-      "build": "PGPASSWORD=krkRCJQaNRob45zh94TvxWy31rarKqJJpsql pg_dump -c valuesets2 | ./medications.csv | ssh valuesets2_user@ dpg-coiv125jm4es739v4ce0-a './medications.csv | psql valuesets2'",
+      "build": "COPY medications FROM '/medications.csv', delimiter ',' CSV HEADER'; ",
       "start": "nodemon index.js"
     },
     "author": "",
