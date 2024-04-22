@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "seed": "node ./db/seed.js && cat ../medications.csv | PGPASSWORD=krkRCJQaNRob45zh94TvxWy31rarKqJJ psql -h dpg-coiv125jm4es739v4ce0-a -d valuesets2 -U valuesets2_user -c  'COPY states FROM STDIN with delimiter as ',';' && cat ../beta_blocker_value_sets.csv PGPASSWORD=krkRCJQaNRob45zh94TvxWy31rarKqJJ psql -h dpg-coiv125jm4es739v4ce0-a -d valuesets2 -U valuesets2_user -c  'COPY states FROM STDIN with delimiter as ',';'",
+      "seed": "node ./db/seed.js && PGPASSWORD=krkRCJQaNRob45zh94TvxWy31rarKqJJ psql -h dpg-coiv125jm4es739v4ce0-a -d valuesets2 -U valuesets2_user -c  'COPY states FROM STDIN with delimiter as ',';' < /medications.csv && PGPASSWORD=krkRCJQaNRob45zh94TvxWy31rarKqJJ psql -h dpg-coiv125jm4es739v4ce0-a -d valuesets2 -U valuesets2_user -c  'COPY states FROM STDIN with delimiter as ',';' < /beta_blocker_value-sets.csv",
       "start": "nodemon index.js"
     },
     "author": "",
