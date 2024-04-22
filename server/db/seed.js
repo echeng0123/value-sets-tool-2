@@ -44,6 +44,19 @@ const createTables = async () => {
 	console.log("Tables built");
 };
 
+// Copy data to database
+// const copyData = async () => {
+// 	console.log("Copying data...");
+// 	console.log("Current directory: " + process.cwd());
+// 	await client.query(
+// 		`
+//         COPY beta_blocker_value_sets FROM './beta_blocker_value_sets.csv' delimiter ',' CSV HEADER;
+//         COPY medications FROM './medications.csv' delimiter ',' CSV HEADER;
+//         `
+// 	);
+// 	console.log("data copied");
+// };
+
 // Call all functions and build database
 const rebuildDb = async () => {
 	try {
@@ -54,6 +67,7 @@ const rebuildDb = async () => {
 		// run functions
 		await dropTables();
 		await createTables();
+		// await copyData();
 	} catch (error) {
 		console.error("Can't build DB", error);
 	} finally {
