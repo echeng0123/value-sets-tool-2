@@ -1,19 +1,17 @@
 /* eslint-disable react/jsx-key */
 export default function ResultsContainer({ currentButton, valueSets }) {
-	// console.log("currentButton inside results container is: ", currentButton);
-	// console.log("valueSets in container:", valueSets);
 	return (
 		<section>
-			<div id="results-container">
-				<h2 style={{ color: "#02524a" }}>
-					<u>Value Sets corresponding to search query</u>
+			<div id="results-container" className="single-card-container">
+				<h2 className="single-card-title">
+					Value Sets Corresponding to Search Query
 				</h2>
 				{currentButton && valueSets.length > 0 ? (
 					<div>
 						{valueSets.map((response) => {
 							return (
 								<div>
-									<h3>{response}</h3>
+									<h2>{response}</h2>
 								</div>
 							);
 						})}

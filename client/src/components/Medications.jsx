@@ -372,7 +372,7 @@ export default function Medications() {
 						onSubmit={handleSubmit}
 						className="search-form-container"
 					>
-						<label htmlFor="Search">
+						<label htmlFor="Search" className="search-label">
 							Select field, then search by pressing enter
 						</label>
 						<br />
@@ -391,55 +391,79 @@ export default function Medications() {
 					{currentButton === "medication-id" &&
 						Object.keys(medicationToDisplay).length > 0 &&
 						searchInput.length != 0 && (
-							<div>
-								<h3>
+							<div className="single-card-container">
+								<h2 className="single-card-title">
 									Medication #{" "}
 									{medicationToDisplay.medication_id}
-								</h3>
-								<table>
-									<tr>
-										<th>Medication ID</th>
-										<th>
-											{medicationToDisplay.medication_id}
-										</th>
-									</tr>
-									<tr>
-										<th>Medname</th>
-										<th>{medicationToDisplay.medname}</th>
-									</tr>
-									<tr>
-										<th>Simple Generic Name</th>
-										<th>
-											{
-												medicationToDisplay.simple_generic_name
-											}
-										</th>
-									</tr>
-									<tr>
-										<th>Route</th>
-										<th>{medicationToDisplay.route}</th>
-									</tr>
-								</table>
-								<br />
-								<br />
-								<table>
-									<tr>
-										<th>Outpatients</th>
-										<th>
-											{medicationToDisplay.outpatients}
-										</th>
-									</tr>
-									<tr>
-										<th>Inpatients</th>
-										<th>
-											{medicationToDisplay.inpatients}
-										</th>
-									</tr>
-									<tr>
-										<th>Patients</th>
-										<th>{medicationToDisplay.patients}</th>
-									</tr>
-								</table>
+								</h2>
+								<div className="medication-table">
+									<table>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Medication ID</i>
+											</th>
+											<th className="medication-table-cell">
+												{
+													medicationToDisplay.medication_id
+												}
+											</th>
+										</tr>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Medname</i>
+											</th>
+											<th className="medication-table-cell">
+												{medicationToDisplay.medname}
+											</th>
+										</tr>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Simple Generic Name</i>
+											</th>
+											<th className="medication-table-cell">
+												{
+													medicationToDisplay.simple_generic_name
+												}
+											</th>
+										</tr>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Route</i>
+											</th>
+											<th className="medication-table-cell">
+												{medicationToDisplay.route}
+											</th>
+										</tr>
+									</table>
+									<table>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Outpatients</i>
+											</th>
+											<th className="medication-table-cell">
+												{
+													medicationToDisplay.outpatients
+												}
+											</th>
+										</tr>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Inpatients</i>
+											</th>
+											<th className="medication-table-cell">
+												{medicationToDisplay.inpatients}
+											</th>
+										</tr>
+										<tr>
+											<th className="medication-table-cell">
+												<i>Patients</i>
+											</th>
+											<th className="medication-table-cell">
+												{medicationToDisplay.patients}
+											</th>
+										</tr>
+									</table>
+								</div>
 							</div>
 						)}
 					{/* filter medication by simple generic name */}
@@ -447,65 +471,74 @@ export default function Medications() {
 						medicationToDisplay.length > 0 &&
 						searchInput.length != 0 && (
 							<div>
-								<h3>
-									Medication
-									{medicationToDisplay.simple_generic_name}
-								</h3>
-
-								{medicationToDisplay.map((medication) => {
-									return (
-										<div>
-											<table>
-												<tr>
-													<th>Medication ID</th>
-													<th>
-														{
-															medication.medication_id
-														}
-													</th>
-												</tr>
-												<tr>
-													<th>Medname</th>
-													<th>
-														{medication.medname}
-													</th>
-												</tr>
-												<tr>
-													<th>Simple Generic Name</th>
-													<th>
-														{
-															medication.simple_generic_name
-														}
-													</th>
-												</tr>
-												<tr>
-													<th>Route</th>
-													<th>{medication.route}</th>
-												</tr>
-												<tr>
-													<th>Outpatients</th>
-													<th>
-														{medication.outpatients}
-													</th>
-												</tr>
-												<tr>
-													<th>Inpatients</th>
-													<th>
-														{medication.inpatients}
-													</th>
-												</tr>
-												<tr>
-													<th>Patients</th>
-													<th>
-														{medication.patients}
-													</th>
-												</tr>
-											</table>
-											<br />
-											<br />
-										</div>
-									);
-								})}
+								<h2 className="single-card-title">
+									Corresponding Medication Searched:{" "}
+									{medicationToDisplay[0].simple_generic_name}
+								</h2>
+								<div className="multiple-card-grid">
+									{medicationToDisplay.map((medication) => {
+										return (
+											<div className="single-card-container">
+												<table>
+													<tr>
+														<th>Medication ID</th>
+														<th>
+															{
+																medication.medication_id
+															}
+														</th>
+													</tr>
+													<tr>
+														<th>Medname</th>
+														<th>
+															{medication.medname}
+														</th>
+													</tr>
+													<tr>
+														<th>
+															Simple Generic Name
+														</th>
+														<th>
+															{
+																medication.simple_generic_name
+															}
+														</th>
+													</tr>
+													<tr>
+														<th>Route</th>
+														<th>
+															{medication.route}
+														</th>
+													</tr>
+													<tr>
+														<th>Outpatients</th>
+														<th>
+															{
+																medication.outpatients
+															}
+														</th>
+													</tr>
+													<tr>
+														<th>Inpatients</th>
+														<th>
+															{
+																medication.inpatients
+															}
+														</th>
+													</tr>
+													<tr>
+														<th>Patients</th>
+														<th>
+															{
+																medication.patients
+															}
+														</th>
+													</tr>
+												</table>
+											</div>
+										);
+									})}
+								</div>
 							</div>
 						)}
 					{/* filter medication by route */}

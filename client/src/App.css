@@ -61,7 +61,7 @@
 }
 
 #results-container{
-    border: 1px dashed yellow;
+    /* border: 1px dashed yellow; */
     margin: 1rem 0;
     padding: 1rem 2rem;
     background-color: #9cd9c8de;
@@ -76,7 +76,7 @@
 
 .single-card-container {
     /* border: 2px dashed cyan; */
-    margin: 1rem 10rem;
+    margin: 1rem 1rem;
     background-color: #9cd9c8de;
     border-radius: 10px;
     box-shadow: 2px 2px 10px 5px rgba(0,0,0,0.5);
@@ -133,7 +133,7 @@
     scale: 1.3;
     appearance: none;
     border-radius: 50%;
-    border: 2px solid #999;
+    border: 2px solid rgb(27, 27, 27);
     transition: 0.15s all linear;
 }
 
@@ -143,7 +143,7 @@
 }
 
 .radio-button:hover{
-    border: 5px solid rgb(27, 27, 27, 0.5);
+    border: 5px solid #00524a7d;
     cursor: pointer;
 }
 
@@ -156,8 +156,23 @@
     margin: 0 1rem;
     padding: 0.5rem;
     background-color: #078C7F;
-    border-radius: 3px;
-    border: 1px solid #02524a;
+    border-radius: 8px;
+    border: 1px solid #1D1D1D;
+    
+    & a{
+        font-weight:700;
+    }
+}
+
+.top-button:hover{
+    background-color: #023934;
+    cursor: pointer;
+    color: rgb(64, 247, 192);
+    box-shadow: 2px 2px 4px 3px rgba(0, 0, 0, 0.5);
+
+    & a:hover {
+        color: white;
+    }
 }
 
 .page-header{
@@ -168,13 +183,28 @@
 
 .single-card-title{
     background-color: rgb(255, 200, 0);
-    margin: 0.5rem 20%;
+    margin: 1rem 20%;
     border-radius: 10px;
     border: 2px solid black;
 }
 
 .multiple-card-grid{
+    /* place-content: center; */
+    justify-content: center;
     display: flex;
+    flex-wrap: wrap;
+    border: 1px solid rgb(255, 255, 255);
+}
+
+.medication-table{
+    border: 1px solid rgb(30, 30, 30);
+    display: flex;
+    margin: 0 10rem;
+}
+
+.medication-table-cell{
+    border: 1px solid rgb(30, 30, 30);
+    padding: 0 1rem;
 }
 
 /* NAVBAR--------------------------- */
