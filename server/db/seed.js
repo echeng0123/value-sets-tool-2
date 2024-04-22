@@ -5,20 +5,20 @@ const client = require("./client");
 // Drop tables for cleanliness; note: only doing this for the purposes of developing & testing this data; would not do this on a formal production database
 
 // Drop tables
-const dropTables = async () => {
-	try {
-		console.log("Starting to drop tables");
-		await client.query(`
-        DROP TABLE IF EXISTS medications cascade;
-        DROP TABLE IF EXISTS beta_blocker_value_sets cascade;
-        DROP TABLE IF EXISTS junction_value_sets cascade;
-        `);
-		console.log("Tables dropped");
-	} catch (error) {
-		console.log("Error dropping tables");
-		throw error;
-	}
-};
+// const dropTables = async () => {
+// 	try {
+// 		console.log("Starting to drop tables");
+// 		await client.query(`
+//         DROP TABLE IF EXISTS medications cascade;
+//         DROP TABLE IF EXISTS beta_blocker_value_sets cascade;
+//         DROP TABLE IF EXISTS junction_value_sets cascade;
+//         `);
+// 		console.log("Tables dropped");
+// 	} catch (error) {
+// 		console.log("Error dropping tables");
+// 		throw error;
+// 	}
+// };
 
 // Create tables
 const createTables = async () => {
