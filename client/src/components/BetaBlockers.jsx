@@ -177,7 +177,7 @@ export default function BetaBlockers() {
 				value_set_id: valueSetsQuery.value_set_id,
 				value_set_name: valueSetsQuery.value_set_name,
 				corresponding_number: valueSetsQuery.medications
-					.replaceAll("|", ",")
+					.replaceAll(" - ", ",")
 					.split(",").length,
 				medications: valueSetsQuery.medications,
 			};
@@ -390,17 +390,17 @@ export default function BetaBlockers() {
 												Value Set{" "}
 												{dataRowByName.value_set_id}
 											</h2>
-											<h3>
+											<h2>
 												{dataRowByName.value_set_name}
-											</h3>
-											<h4>
+											</h2>
+											<h2>
 												Total number of corresponding
 												medications:{" "}
 												{
 													dataRowByName.corresponding_number
 												}
-											</h4>
-											<h4>Medications</h4>
+											</h2>
+											<h3>Medications</h3>
 											<p>
 												{dataRowByName.medications.replaceAll(
 													"|",

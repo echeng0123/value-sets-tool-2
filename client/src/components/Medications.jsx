@@ -481,7 +481,26 @@ export default function Medications() {
 											<div className="single-card-container">
 												<table>
 													<tr>
-														<th>Medication ID</th>
+														<th>
+															<i>Medname</i>
+														</th>
+														<th
+															style={{
+																color: "#ffd43e",
+																textShadow:
+																	"1px 1px 2px black",
+																fontWeight: 800,
+																fontSize:
+																	"1.1rem",
+															}}
+														>
+															{medication.medname}
+														</th>
+													</tr>
+													<tr>
+														<th>
+															<i>Medication ID</i>
+														</th>
 														<th>
 															{
 																medication.medication_id
@@ -489,14 +508,11 @@ export default function Medications() {
 														</th>
 													</tr>
 													<tr>
-														<th>Medname</th>
 														<th>
-															{medication.medname}
-														</th>
-													</tr>
-													<tr>
-														<th>
-															Simple Generic Name
+															<i>
+																Simple Generic
+																Name
+															</i>
 														</th>
 														<th>
 															{
@@ -505,13 +521,17 @@ export default function Medications() {
 														</th>
 													</tr>
 													<tr>
-														<th>Route</th>
+														<th>
+															<i>Route</i>
+														</th>
 														<th>
 															{medication.route}
 														</th>
 													</tr>
 													<tr>
-														<th>Outpatients</th>
+														<th>
+															<i>Outpatients</i>
+														</th>
 														<th>
 															{
 																medication.outpatients
@@ -519,7 +539,9 @@ export default function Medications() {
 														</th>
 													</tr>
 													<tr>
-														<th>Inpatients</th>
+														<th>
+															<i>Inpatients</i>
+														</th>
 														<th>
 															{
 																medication.inpatients
@@ -527,7 +549,9 @@ export default function Medications() {
 														</th>
 													</tr>
 													<tr>
-														<th>Patients</th>
+														<th>
+															<i>Patients</i>
+														</th>
 														<th>
 															{
 																medication.patients
