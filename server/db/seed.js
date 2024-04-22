@@ -57,7 +57,7 @@ const rebuildDb = async () => {
 		client.connect();
 
 		// run functions
-		await dropTables();
+		// await dropTables();
 		await createTables();
 
 		// Generating starting data
